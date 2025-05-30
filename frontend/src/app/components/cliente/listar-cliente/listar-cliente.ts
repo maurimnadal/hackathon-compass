@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
-
 export interface Conta {
   id_conta: number;
   tipo: string;
@@ -43,7 +42,8 @@ export class ListarCliente {
       data_nascimento: new Date(1990, 4, 15),
       contas: [
         { id_conta: 101, tipo: 'Corrente', saldo: 1500.75 },
-        { id_conta: 102, tipo: 'Poupança', saldo: 3200.00 }
+        { id_conta: 102, tipo: 'Poupança', saldo: 3200.00 },
+        { id_conta: 101, tipo: 'Corrente', saldo: 1500.75 },
       ]
     }
   ];

@@ -1,12 +1,18 @@
 <main class="containerListarCliente">
-  <mat-form-field appearance="outline" style="width: 300px;">
+  <mat-form-field appearance="outline" style="width: 32.5%; min-width: 250px;">
     <mat-label>Digite o ID do Cliente</mat-label>
-    <input matInput type="number" [(ngModel)]="clienteId" placeholder="ID do cliente">
+    <input matInput type="number" min="1" [(ngModel)]="clienteId" placeholder="ID do cliente">
   </mat-form-field>
-  <button mat-raised-button color="primary" (click)="buscarCliente()">Buscar</button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="buscarCliente()" 
+    style="width: 32.5%; min-width: 250px; height: 48px; font-size: 1.1rem; font-weight: 500; letter-spacing: 1px; margin-bottom: 1.5rem; box-shadow: 0 2px 8px #1976d21a;">
+    Buscar
+  </button>
 
   <ng-container *ngIf="clienteSelecionado">
-    <mat-card class="cliente-card">
+    <mat-card class="cliente-card" style="width: 50%; min-width: 300px;">
       <mat-card-header>
         <mat-card-title>{{ clienteSelecionado.nome }}</mat-card-title>
         <mat-card-subtitle>ID: {{ clienteSelecionado.id_cliente }}</mat-card-subtitle>
@@ -14,15 +20,17 @@
       <mat-card-content>
         <p><strong>Email:</strong> {{ clienteSelecionado.email }}</p>
         <p><strong>Data de Nascimento:</strong> {{ clienteSelecionado.data_nascimento | date:'dd/MM/yyyy' }}</p>
-        <div>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
           <strong>Contas:</strong>
-          <ul>
-            <li *ngFor="let conta of clienteSelecionado.contas">
-              ID: {{ conta.id_conta }} |
-              Tipo: {{ conta.tipo }} |
-              Saldo: {{ conta.saldo | currency:'BRL':'symbol':'1.2-2' }}
-            </li>
-          </ul>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <mat-card *ngFor="let conta of clienteSelecionado.contas" style="background: #f5f5f5;">
+              <mat-card-content>
+                <p><strong>ID:</strong> {{ conta.id_conta }}</p>
+                <p><strong>Tipo:</strong> {{ conta.tipo }}</p>
+                <p><strong>Saldo:</strong> {{ conta.saldo | currency:'BRL':'symbol':'1.2-2' }}</p>
+              </mat-card-content>
+            </mat-card>
+          </div>
         </div>
       </mat-card-content>
     </mat-card>
