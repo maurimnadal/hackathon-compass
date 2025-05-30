@@ -8,7 +8,16 @@ import java.math.BigDecimal;
 @Table(name = "accounts")
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+        name = "account_seq",
+        sequenceName = "account_seq",
+        initialValue = 100001,
+        allocationSize = 1
+    )
+    @GeneratedValue(
+        strategy = GenerationType.SEQUENCE,
+        generator = "account_seq"
+    )
     private Long id;
 
     @ManyToOne
