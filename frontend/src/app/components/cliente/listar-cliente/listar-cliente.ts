@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
+
 export interface Conta {
   id_conta: number;
   tipo: string;
@@ -19,13 +24,17 @@ export interface Cliente {
 @Component({
   selector: 'app-listar-cliente',
   standalone: true,
-  imports: [CommonModule, MatCardModule],
+  imports: [CommonModule, MatCardModule, FormsModule, MatFormFieldModule, MatInputModule],
   templateUrl: './listar-cliente.html',
   styleUrl: './listar-cliente.css'
 })
 
 //verificar recebimento do formato da data
 export class ListarCliente {
+  clienteId: number | null = null;
+  buscou = false;
+  clienteSelecionado: Cliente | null = null;
+
   clientes: Cliente[] = [
     {
       id_cliente: 1,
@@ -38,4 +47,9 @@ export class ListarCliente {
       ]
     }
   ];
+
+  buscarCliente() {
+    this.buscou = true;
+    this.clienteSelecionado = this.clientes.find(c => c.id_cliente === this.clienteId) || null;
+  }
 }

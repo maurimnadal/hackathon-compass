@@ -1,22 +1,34 @@
 <main class="containerListarCliente">
-  <mat-card *ngFor="let cliente of clientes" class="cliente-card">
-    <mat-card-header>
-      <mat-card-title>{{ cliente.nome }}</mat-card-title>
-      <mat-card-subtitle>ID: {{ cliente.id_cliente }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p><strong>Email:</strong> {{ cliente.email }}</p>
-      <p><strong>Data de Nascimento:</strong> {{ cliente.data_nascimento | date:'dd/MM/yyyy' }}</p>
-      <div>
-        <strong>Contas:</strong>
-        <ul>
-          <li *ngFor="let conta of cliente.contas">
-            ID: {{ conta.id_conta }} |
-            Tipo: {{ conta.tipo }} |
-            Saldo: {{ conta.saldo | currency:'BRL':'symbol':'1.2-2' }}
-          </li>
-        </ul>
-      </div>
-    </mat-card-content>
-  </mat-card>
+  <mat-form-field appearance="outline" style="width: 300px;">
+    <mat-label>Digite o ID do Cliente</mat-label>
+    <input matInput type="number" [(ngModel)]="clienteId" placeholder="ID do cliente">
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="buscarCliente()">Buscar</button>
+
+  <ng-container *ngIf="clienteSelecionado">
+    <mat-card class="cliente-card">
+      <mat-card-header>
+        <mat-card-title>{{ clienteSelecionado.nome }}</mat-card-title>
+        <mat-card-subtitle>ID: {{ clienteSelecionado.id_cliente }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Email:</strong> {{ clienteSelecionado.email }}</p>
+        <p><strong>Data de Nascimento:</strong> {{ clienteSelecionado.data_nascimento | date:'dd/MM/yyyy' }}</p>
+        <div>
+          <strong>Contas:</strong>
+          <ul>
+            <li *ngFor="let conta of clienteSelecionado.contas">
+              ID: {{ conta.id_conta }} |
+              Tipo: {{ conta.tipo }} |
+              Saldo: {{ conta.saldo | currency:'BRL':'symbol':'1.2-2' }}
+            </li>
+          </ul>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+
+  <div *ngIf="buscou && !clienteSelecionado" style="color: red; margin-top: 1rem;">
+    Cliente não encontrado.
+  </div>
 </main>
