@@ -1,0 +1,82 @@
+<section id="editarCliente" class="secao">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Editar Cliente</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <!-- Formulário para buscar cliente pelo ID -->
+            <form [formGroup]="buscaForm" (ngSubmit)="buscarCliente()" *ngIf="!clienteEncontrado && !atualizacaoSucesso">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Enter Customer ID to update</mat-label>
+                    <input matInput formControlName="id" required>
+                    <mat-error *ngIf="buscaForm.get('id')?.hasError('required')">
+                        ID é obrigatório
+                    </mat-error>
+                    <mat-error *ngIf="buscaForm.get('id')?.hasError('pattern')">
+                        ID deve conter apenas números
+                    </mat-error>
+                </mat-form-field>
+                
+                <div *ngIf="idNaoEncontrado" class="error-message">
+                    <mat-icon color="warn">error</mat-icon>
+                    <span>Cliente não encontrado com este ID</span>
+                </div>
+                
+                <div class="button-row">
+                    <button mat-raised-button color="primary" type="submit">Buscar</button>
+                </div>
+            </form>
+            
+            <!-- Formulário para editar cliente após encontrado -->
+            <form [formGroup]="editarForm" (ngSubmit)="onSubmit()" *ngIf="clienteEncontrado && !atualizacaoSucesso">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Enter new Name (current: {{clienteAtual.nome}})</mat-label>
+                    <input matInput formControlName="nome" required>
+                    <mat-error *ngIf="editarForm.get('nome')?.hasError('required')">
+                        Nome é obrigatório
+                    </mat-error>
+                    <mat-error *ngIf="editarForm.get('nome')?.hasError('minlength')">
+                        Nome deve ter pelo menos 1 caractere
+                    </mat-error>
+                    <mat-error *ngIf="editarForm.get('nome')?.hasError('containsNumbers')">
+                        Nome não pode conter números
+                    </mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Enter new Email (current: {{clienteAtual.email}})</mat-label>
+                    <input matInput type="email" formControlName="email" required>
+                    <mat-error *ngIf="editarForm.get('email')?.hasError('required')">
+                        Email é obrigatório
+                    </mat-error>
+                    <mat-error *ngIf="editarForm.get('email')?.hasError('email')">
+                        Email inválido
+                    </mat-error>
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Enter new Birthdate (current: {{clienteAtual.dataNascimento}})</mat-label>
+                    <input matInput formControlName="dataNascimento" placeholder="YYYYMMDD" required>
+                    <mat-hint>Format: YYYYMMDD</mat-hint>
+                    <mat-error *ngIf="editarForm.get('dataNascimento')?.hasError('required')">
+                        Data de nascimento é obrigatória
+                    </mat-error>
+                    <mat-error *ngIf="editarForm.get('dataNascimento')?.hasError('pattern')">
+                        Formato inválido. Use YYYYMMDD
+                    </mat-error>
+                </mat-form-field>
+                
+                <div class="button-row">
+                    <button mat-raised-button color="primary" type="submit">Atualizar</button>
+                </div>
+            </form>
+            
+            <!-- Mensagem de sucesso -->
+            <div *ngIf="atualizacaoSucesso" class="success-container">
+                <mat-icon color="primary">check_circle</mat-icon>
+                <p>Customer updated successfully!</p>
+                <button mat-button color="primary" (click)="resetForm()">Editar outro cliente</button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</section>
