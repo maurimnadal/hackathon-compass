@@ -18,7 +18,7 @@
                         Nome não pode conter números
                     </mat-error>
                 </mat-form-field>
-                
+
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Email</mat-label>
                     <input matInput type="email" formControlName="email" required>
@@ -29,26 +29,28 @@
                         Email inválido
                     </mat-error>
                 </mat-form-field>
-                
+
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Data de Nascimento (AAAAMMDD)</mat-label>
                     <input matInput formControlName="dataNascimento" placeholder="AAAAMMDD" required>
                     <mat-error *ngIf="clienteForm.get('dataNascimento')?.hasError('required')">
                         Data de nascimento é obrigatória
                     </mat-error>
-                    <mat-error *ngIf="clienteForm.get('dataNascimento')?.hasError('onlyNumbers') && !clienteForm.get('dataNascimento')?.hasError('required')">
+                    <mat-error
+                        *ngIf="clienteForm.get('dataNascimento')?.hasError('onlyNumbers') && !clienteForm.get('dataNascimento')?.hasError('required')">
                         Apenas números são permitidos
                     </mat-error>
-                    <mat-error *ngIf="clienteForm.get('dataNascimento')?.hasError('pattern') && !clienteForm.get('dataNascimento')?.hasError('onlyNumbers') && !clienteForm.get('dataNascimento')?.hasError('required')">
+                    <mat-error
+                        *ngIf="clienteForm.get('dataNascimento')?.hasError('pattern') && !clienteForm.get('dataNascimento')?.hasError('onlyNumbers') && !clienteForm.get('dataNascimento')?.hasError('required')">
                         A data deve ter exatamente 8 dígitos
                     </mat-error>
                 </mat-form-field>
-                
+
                 <div class="button-row">
                     <button mat-raised-button color="primary" type="submit">Registrar</button>
                 </div>
             </form>
-            
+
             <div *ngIf="registroSucesso" class="success-container">
                 <mat-icon color="primary">check_circle</mat-icon>
                 <p>Cliente Registrado com Sucesso!</p>

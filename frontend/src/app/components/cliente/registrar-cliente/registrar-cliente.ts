@@ -11,11 +11,11 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-registrar-cliente',
   standalone: true,
   imports: [
-    ReactiveFormsModule, 
-    CommonModule, 
-    MatCardModule, 
-    MatFormFieldModule, 
-    MatInputModule, 
+    ReactiveFormsModule,
+    CommonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatButtonModule,
     MatIconModule
   ],
@@ -27,14 +27,14 @@ export class RegistrarCliente implements OnInit {
   registroSucesso = false;
   clienteId = '';
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
     this.clienteForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(1), this.noNumbersValidator()]],
       email: ['', [Validators.required, Validators.email]],
       dataNascimento: ['', [
-        Validators.required, 
+        Validators.required,
         this.onlyNumbersValidator(),  // Verifica se contém apenas números
         Validators.pattern(/^\d{8}$/)  // Verifica se tem exatamente 8 dígitos
       ]]
@@ -62,25 +62,31 @@ export class RegistrarCliente implements OnInit {
 
   // Validador personalizado para não permitir números
   noNumbersValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       const hasNumbers = /[0-9]/.test(control.value);
-      return hasNumbers ? {'containsNumbers': {value: control.value}} : null;
+      return hasNumbers ? { 'containsNumbers': { value: control.value } } : null;
     };
   }
-  
+
   // Validador personalizado para permitir apenas números
   onlyNumbersValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       if (!control.value) {
         return null; // Não validar campo vazio
       }
       const hasNonNumbers = /[^0-9]/.test(control.value);
-      return hasNonNumbers ? {'onlyNumbers': {value: control.value}} : null;
+      return hasNonNumbers ? { 'onlyNumbers': { value: control.value } } : null;
     };
   }
 
+  // Variável estática para simular persistência entre chamadas
+  private static ultimoId = 0;
+
   private gerarId(): string {
-    // Simulando a geração de um ID com 5 dígitos
-    return String(Math.floor(10000 + Math.random() * 90000)).padStart(5, '0');
+    // Incrementa o ID para cada novo cliente
+    RegistrarCliente.ultimoId++;
+
+    // Formata o ID com zeros à esquerda (00001, 00002, etc.)
+    return String(RegistrarCliente.ultimoId).padStart(5, '0');
   }
 }
