@@ -61,8 +61,11 @@
                     <mat-error *ngIf="editarForm.get('dataNascimento')?.hasError('required')">
                         Data de nascimento é obrigatória
                     </mat-error>
-                    <mat-error *ngIf="editarForm.get('dataNascimento')?.hasError('pattern')">
-                        Formato inválido. Use YYYYMMDD
+                    <mat-error *ngIf="editarForm.get('dataNascimento')?.hasError('onlyNumbers') && !editarForm.get('dataNascimento')?.hasError('required')">
+                        Apenas números são permitidos
+                    </mat-error>
+                    <mat-error *ngIf="editarForm.get('dataNascimento')?.hasError('pattern') && !editarForm.get('dataNascimento')?.hasError('onlyNumbers') && !editarForm.get('dataNascimento')?.hasError('required')">
+                        A data deve ter exatamente 8 dígitos
                     </mat-error>
                 </mat-form-field>
                 

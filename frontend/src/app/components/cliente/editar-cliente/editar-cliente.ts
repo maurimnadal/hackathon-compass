@@ -46,7 +46,11 @@ export class EditarCliente implements OnInit {
     this.editarForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(1), this.noNumbersValidator()]],
       email: ['', [Validators.required, Validators.email]],
-      dataNascimento: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]]
+      dataNascimento: ['', [
+        Validators.required, 
+        this.onlyNumbersValidator(),  // Verifica se contém apenas números
+        Validators.pattern(/^\d{8}$/)  // Verifica se tem exatamente 8 dígitos
+      ]]
     });
   }
 
@@ -125,6 +129,17 @@ export class EditarCliente implements OnInit {
     return (control: AbstractControl): {[key: string]: any} | null => {
       const hasNumbers = /[0-9]/.test(control.value);
       return hasNumbers ? {'containsNumbers': {value: control.value}} : null;
+    };
+  }
+  
+  // Validador personalizado para permitir apenas números
+  onlyNumbersValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      if (!control.value) {
+        return null; // Não validar campo vazio
+      }
+      const hasNonNumbers = /[^0-9]/.test(control.value);
+      return hasNonNumbers ? {'onlyNumbers': {value: control.value}} : null;
     };
   }
 }
