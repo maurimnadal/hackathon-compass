@@ -3,9 +3,14 @@
   margin: 20px auto;
 }
 
+.title{
+  margin-bottom: 10px;
+}
+
 .full-width {
   width: 100%;
   margin-bottom: 15px;
+  margin-top: 5px;
 }
 
 .button-row {
