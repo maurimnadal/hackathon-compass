@@ -75,11 +75,11 @@ export class EditarCliente implements OnInit {
       };
       
       // Preenchendo o formulário de edição com os valores atuais
-      this.editarForm.patchValue({
-        nome: this.clienteAtual.nome,
-        email: this.clienteAtual.email,
-        dataNascimento: this.clienteAtual.dataNascimento
-      });
+      // this.editarForm.patchValue({
+      //   nome: this.clienteAtual.nome,
+      //   email: this.clienteAtual.email,
+      //   dataNascimento: this.clienteAtual.dataNascimento
+      // });
       
       this.clienteEncontrado = true;
       this.idNaoEncontrado = false;
