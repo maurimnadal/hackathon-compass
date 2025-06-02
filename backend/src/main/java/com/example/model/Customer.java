@@ -3,21 +3,12 @@ package com.example.model;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-
 @Entity
 @Table(name = "customers")
 public class Customer {
     @Id
-    @SequenceGenerator(
-        name = "customer_seq",
-        sequenceName = "customer_seq",
-        initialValue = 1,
-        allocationSize = 1
-    )
-    @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "customer_seq"
-    )
+    @SequenceGenerator(name = "customer_seq", sequenceName = "customer_seq", initialValue = 100001, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")
     private Long id;
 
     @Column(nullable = false)
