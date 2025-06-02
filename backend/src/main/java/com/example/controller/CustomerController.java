@@ -39,8 +39,8 @@ public class CustomerController {
     public ResponseEntity<CustomerDTO> obterCliente(@PathVariable("customerId") Long id) {
         return customerService.findById(id)
                 .map(cliente -> {
-                    // Converter LocalDate para String no formato YYYYMMDD
-                    String birthday = cliente.getBirthday().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+                    // Converter LocalDate para String no formato yyyy-MM-dd
+                    String birthday = cliente.getBirthday().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                     
                     CustomerDTO dto = new CustomerDTO(
                         cliente.getName(),
