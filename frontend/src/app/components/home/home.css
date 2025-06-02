@@ -1,34 +1,69 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+.spacer {
+  flex: 1 1 auto;
 }
 
 .nav-links {
-  margin-left: 20px;
   display: flex;
   gap: 10px;
 }
 
-.content {
-  padding: 20px;
-  flex: 1;
+.welcome-container {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.welcome-message {
+.welcome-content {
   text-align: center;
-  padding: 40px 20px;
+  padding: 20px;
 }
 
 .welcome-icon {
   font-size: 64px;
   height: 64px;
   width: 64px;
+  color: #3f51b5;
   margin-bottom: 20px;
+}
+
+.features {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.feature {
+  flex: 1;
+  min-width: 250px;
+  margin: 15px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.feature mat-icon {
+  font-size: 36px;
+  height: 36px;
+  width: 36px;
+  color: #3f51b5;
+  margin-bottom: 15px;
+}
+
+.feature h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.start-message {
+  margin-top: 30px;
+  font-size: 18px;
+  color: #666;
 }

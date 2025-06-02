@@ -1,41 +1,72 @@
-<div class="container">
-  <header class="header">
-    <mat-toolbar color="primary">
-      <span>Banco Compass.UOL</span>
-      <div class="nav-links">
+<mat-toolbar color="primary">
+    <span>Banco Compass.UOL</span>
+    <span class="spacer"></span>
+    <div class="nav-links">
+        <!-- Home -->
+        <a mat-button routerLink="/">
+            <mat-icon>home</mat-icon>
+            Home
+        </a>
+
         <!-- Cliente -->
-        <button mat-button [matMenuTriggerFor]="clienteMenu">Clientes</button>
+        <button mat-button [matMenuTriggerFor]="clienteMenu">
+            Clientes
+            <mat-icon>arrow_drop_down</mat-icon>
+        </button>
         <mat-menu #clienteMenu="matMenu">
-          <a mat-menu-item routerLink="/registrar-cliente">Registrar Cliente</a>
-          <a mat-menu-item routerLink="/editar-cliente">Editar Cliente</a>
-          <a mat-menu-item routerLink="/listar-cliente">Listar Cliente</a>
+            <a mat-menu-item routerLink="/registrar-cliente">Registrar Cliente</a>
+            <a mat-menu-item routerLink="/editar-cliente">Editar Cliente</a>
+            <a mat-menu-item routerLink="/listar-cliente">Informações do Cliente</a>
         </mat-menu>
 
         <!-- Conta -->
         <a mat-button routerLink="/criar-conta">Criar Conta</a>
 
         <!-- Operações -->
-        <button mat-button [matMenuTriggerFor]="operacoesMenu">Operações</button>
+        <button mat-button [matMenuTriggerFor]="operacoesMenu">
+            Operações
+            <mat-icon>arrow_drop_down</mat-icon>
+        </button>
         <mat-menu #operacoesMenu="matMenu">
-          <a mat-menu-item routerLink="/depositar">Depositar</a>
-          <a mat-menu-item routerLink="/sacar">Sacar</a>
+            <a mat-menu-item routerLink="/depositar">Depositar</a>
+            <a mat-menu-item routerLink="/sacar">Sacar</a>
         </mat-menu>
 
         <!-- Transações -->
-        <a mat-button routerLink="/listar-transacoes">Transações</a>
-      </div>
-    </mat-toolbar>
-  </header>
+        <a mat-button routerLink="/listar-transacoes">Relatório de Transações</a>
+    </div>
+</mat-toolbar>
 
-  <main class="content">
+<div class="welcome-container">
     <mat-card>
-      <mat-card-content>
-        <div class="welcome-message">
-          <mat-icon class="welcome-icon">account_balance</mat-icon>
-          <h1>Bem-vindo ao Sistema Bancário Compass.UOL</h1>
-          <p>Selecione uma opção no menu acima para começar</p>
-        </div>
-      </mat-card-content>
+        <mat-card-content>
+            <div class="welcome-content">
+                <mat-icon class="welcome-icon">account_balance</mat-icon>
+                <h1>Bem-vindo ao Sistema Bancário Compass.UOL</h1>
+                <p>Seu parceiro financeiro para todas as suas necessidades bancárias</p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <mat-icon>person_add</mat-icon>
+                        <h3>Gerenciamento de Clientes</h3>
+                        <p>Cadastre, edite e consulte informações de clientes</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <mat-icon>account_balance_wallet</mat-icon>
+                        <h3>Contas Bancárias</h3>
+                        <p>Crie e gerencie contas para seus clientes</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <mat-icon>swap_horiz</mat-icon>
+                        <h3>Operações Financeiras</h3>
+                        <p>Realize depósitos e saques com facilidade</p>
+                    </div>
+                </div>
+                
+                <p class="start-message">Selecione uma opção no menu acima para começar</p>
+            </div>
+        </mat-card-content>
     </mat-card>
-  </main>
 </div>
