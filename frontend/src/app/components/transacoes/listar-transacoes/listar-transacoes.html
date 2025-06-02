@@ -1,0 +1,67 @@
+<div class="listar-transacoes">
+  <h2 class="title">Listar Transações</h2>
+
+  <mat-form-field appearance="fill" class="search-bar">
+    <mat-label>Número da Conta</mat-label>
+    <input
+      matInput
+      placeholder="Digite o número"
+      [(ngModel)]="numeroConta"
+      name="numeroConta"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="search-bar">
+    <mat-label>Data Início</mat-label>
+    <input
+      matInput
+      [matDatepicker]="startPicker"
+      placeholder="Escolha a data inicial"
+      [(ngModel)]="dataInicio"
+      name="dataInicio"
+    />
+    <mat-datepicker-toggle
+      matSuffix
+      [for]="startPicker"
+    ></mat-datepicker-toggle>
+    <mat-datepicker #startPicker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="search-bar">
+    <mat-label>Data Fim</mat-label>
+    <input
+      matInput
+      [matDatepicker]="endPicker"
+      placeholder="Escolha a data final"
+      [(ngModel)]="dataFim"
+      name="dataFim"
+    />
+    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+    <mat-datepicker #endPicker></mat-datepicker>
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="primary"
+    class="submit-btn"
+    (click)="listarTransacoes()"
+  >
+    Listar
+  </button>
+
+  <div *ngIf="transacoes.length > 0" style="margin-top: 24px; width: 100%">
+    <h3>Transações encontradas</h3>
+
+    <mat-card *ngFor="let t of transacoes" style="margin-bottom: 12px">
+      <mat-card-content>
+        <p><strong>Conta:</strong> {{ t.conta }}</p>
+        <p><strong>Tipe:</strong> {{ t.tipo }}</p>
+        <p><strong>Valor:</strong> {{ t.valor | currency }}</p>
+        <p><strong>Período:</strong> {{ t.data }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div *ngIf="mensagem" style="margin-top: 16px; color: red">
+    {{ mensagem }}
+  </div>
+</div>
