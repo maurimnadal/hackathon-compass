@@ -37,7 +37,6 @@ export class ListarTransacoes {
   mensagem: string = '';
 
   listarTransacoes() {
-    console.log('erm');
     if (!this.numeroConta || !this.dataInicio || !this.dataFim) {
       this.mensagem = 'Preencha todos os campos.';
       return;
