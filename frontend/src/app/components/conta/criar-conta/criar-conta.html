@@ -2,27 +2,28 @@
 
 <form (ngSubmit)="onSubmit()" #formConta="ngForm">
   <div>
-    <label for="clienteId">ID do Cliente</label>
+    <label for="customer_id">ID do Cliente</label>
     <input
-      type="text"
-      id="clienteId"
-      name="clienteId"
-      [(ngModel)]="clienteId"
+      type="number"
+      id="customer_id"
+      name="customer_id"
+      [(ngModel)]="customer_id"
       required
+      min="1"
     />
   </div>
 
   <div>
-    <label for="tipoConta">Tipo de Conta</label>
+    <label for="type">Tipo de Conta</label>
     <select
-      id="tipoConta"
-      name="tipoConta"
-      [(ngModel)]="tipoConta"
+      id="type"
+      name="type"
+      [(ngModel)]="type"
       required
     >
       <option value="" disabled selected>Selecione</option>
-      <option value="corrente">Conta Corrente</option>
-      <option value="poupanca">Conta Poupança</option>
+      <option value="CHECKING">Conta Corrente</option>
+      <option value="SAVINGS">Conta Poupança</option>
     </select>
   </div>
 

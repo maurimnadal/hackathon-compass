@@ -10,15 +10,26 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./criar-conta.css']
 })
 export class CriarContaComponent {
-  clienteId: string = '';
-  tipoConta: string = '';
+  clientes = [
+    { id: 1, nome: 'Cliente Teste 1' },
+    { id: 2, nome: 'Cliente Teste 2' }
+  ];
+
+  customer_id: number | null = null;
+  type: string = '';
   mensagem: string = '';
 
   onSubmit(): void {
-    if (!this.clienteId || !this.tipoConta) return;
+    if (this.customer_id === null || !this.type) {
+      this.mensagem = 'Preencha todos os campos.';
+      return;
+    }
 
-    this.mensagem = `Conta do tipo '${this.tipoConta}' criada com sucesso para o cliente ${this.clienteId}.`;
-    this.clienteId = '';
-    this.tipoConta = '';
+    // Simulação de "salvar" com delay
+    setTimeout(() => {
+      this.mensagem = `Conta criada com sucesso para cliente ID ${this.customer_id} do tipo ${this.type}!`;
+      this.customer_id = null;
+      this.type = '';
+    }, 1000);
   }
 }
