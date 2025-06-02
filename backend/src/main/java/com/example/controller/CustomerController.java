@@ -36,4 +36,15 @@ public class CustomerController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
+        try {
+            Customer updatedCustomer = customerService.updateCustomer(id, customerDTO);
+            return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", e.getMessage());
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+    }
 }
