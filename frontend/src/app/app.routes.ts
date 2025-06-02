@@ -7,6 +7,7 @@ import { ListarTransacoes } from './components/transacoes/listar-transacoes/list
 import { RegistrarCliente } from './components/cliente/registrar-cliente/registrar-cliente';
 import { ListarCliente } from './components/cliente/listar-cliente/listar-cliente';
 import { EditarCliente } from './components/cliente/editar-cliente/editar-cliente';
+import { CriarContaComponent } from './components/conta/criar-conta/criar-conta';
 
 export const routes: Routes = [
     { path : "registrar-cliente", component : RegistrarCliente},
@@ -14,7 +15,8 @@ export const routes: Routes = [
     { path: 'listar-transacoes', component: ListarTransacoes },
     { path : "editar-cliente", component : EditarCliente},
     { path: 'depositar', component: Depositar },
-  { path: 'sacar', component: Sacar }
+  { path: 'sacar', component: Sacar },
+  { path: 'criar-conta', component: CriarContaComponent }
 
 ];
 
