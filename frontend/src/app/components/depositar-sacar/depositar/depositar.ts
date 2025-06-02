@@ -6,7 +6,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { ContaService } from '../../../services/conta/conta.service';
-import { Conta } from '../../../models/conta/conta';
 
 @Component({
   selector: 'app-depositar',
@@ -23,32 +22,17 @@ import { Conta } from '../../../models/conta/conta';
   styleUrl: './depositar.css'
 })
 export class Depositar {
-  numeroConta: number = 0;
-  valor: number = 0;
+  numeroConta: number | null = null;
+  valor: number | null = null;
   mensagem: string = '';
-  saldo: number = 0;
-  tipo: string = '';
-  resposta: string = '';
 
-  verificarNumeroConta(): boolean {
-    return this.numeroConta != null && this.numeroConta > 0;
-  }
 
   constructor(private contaService: ContaService) { }
 
-
   depositar() {
     // Validação do valor e número da conta
-    if (!this.valor || this.valor <= 0) {
-      this.mensagem = 'Informe um valor válido para depósito.';
-      this.resposta = 'erro';
-      this.limparMensagem();
-      return;
-    }
-
-    if (!this.verificarNumeroConta() || this.numeroConta <= 0) {
-      this.mensagem = 'Informe um número de conta válido.';
-      this.resposta = 'erro';
+    if (!this.valor || this.valor <= 0 || this.numeroConta == null) {
+      this.mensagem = 'Valor de depósito ou número da conta inválidos.';
       this.limparMensagem();
       return;
     }
@@ -57,25 +41,21 @@ export class Depositar {
     this.contaService.postDeposit(this.valor, this.numeroConta).subscribe({
       next: (res) => {
         this.mensagem = `Depósito de R$ ${this.valor} na conta ${this.numeroConta} realizado com sucesso!`;
-        this.resposta = 'sucesso';
-        this.valor = 0;
-        this.numeroConta = 0;
+        this.limparMensagem();
+        this.valor = null;
+        this.numeroConta = null;
       },
 
       error: (err) => {
         this.mensagem = err.error?.message || 'Erro ao processar o depósito. Verifique os dados e tente novamente.';
-        this.resposta = 'erro';
+        this.limparMensagem();
       }
     });
-
-    this.limparMensagem();
   }
 
   private limparMensagem() {
     setTimeout(() => {
       this.mensagem = '';
-      this.resposta = '';
     }, 3000);
   }
-
 }

@@ -5,11 +5,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { ContaService } from '../../../services/conta/conta.service';
+
 
 @Component({
   selector: 'app-sacar',
   imports: [
-    FormsModule, 
+    FormsModule,
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
@@ -20,35 +22,38 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './sacar.css'
 })
 export class Sacar {
-  numeroConta: number = 0;
-  valor: number = 0;
+  numeroConta: number | null = null;
+  valor: number | null = null;
   mensagem: string = '';
 
-
-  verificarNumeroConta() {
-    if (this.numeroConta <=0) {
-      return false;
-    }
-    return true;
-  }
-  verificarValor() {
-    if (this.valor <=0) {
-      return false;
-    }
-    return true;
-  }
+  constructor(private contaService: ContaService) { }
 
 
   sacar() {
-    if (this.verificarValor() && this.verificarNumeroConta()) {
-      this.mensagem = `Saque de R$ ${this.valor} na conta ${this.numeroConta} realizado com sucesso!`;
-      this.valor = 0;
-      this.numeroConta = 0;
-    } else {
-      this.mensagem = 'Informe um número de conta e um valor válido para saque.';
+    if (!this.valor || this.valor <= 0 || this.numeroConta == null) {
+      this.mensagem = 'Valor de saque ou número da conta inválidos.';
+      this.limparMensagem();
+      return;
     }
+
+    this.contaService.postWithdraw(this.valor, this.numeroConta).subscribe({
+      next: (res) => {
+        this.mensagem = `Saque de R$ ${this.valor} na conta ${this.numeroConta} realizado com sucesso!`;
+        this.valor = null;
+        this.numeroConta = null;
+        this.limparMensagem();
+      },
+      error: (err) => {
+        this.mensagem = err.error?.message || 'Erro ao processar o saque. Verifique os dados e tente novamente.';
+        this.limparMensagem();
+      }
+    });
+  }
+
+  private limparMensagem() {
     setTimeout(() => {
       this.mensagem = '';
     }, 3000);
   }
+
 }

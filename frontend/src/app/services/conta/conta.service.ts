@@ -23,12 +23,14 @@ export class ContaService {
 
   //faz um depósito em uma conta
   postDeposit(amount: number, account_id: number): Observable<Conta> {
-    return this.http.post<Conta>(`${this.apiUrl}accounts/${account_id}/deposit`, amount);
+    const body = { "amount": amount };
+    return this.http.post<Conta>(`${this.apiUrl}accounts/${account_id}/deposit`, body);
   }
 
   //faz um saque em uma conta
-  postWithdraw(conta: Conta, account_id: number): Observable<Conta> {
-    return this.http.post<Conta>(`${this.apiUrl}accounts/${account_id}/withdraw`, conta);
+  postWithdraw(amount: number, account_id: number): Observable<Conta> {
+    const body = { "amount": amount };
+    return this.http.post<Conta>(`${this.apiUrl}accounts/${account_id}/withdraw`, body);
   }
 
   //retorna a lista de transações de uma conta
