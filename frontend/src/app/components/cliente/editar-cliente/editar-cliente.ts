@@ -49,7 +49,7 @@ export class EditarCliente implements OnInit {
     this.editarForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(1), this.noNumbersValidator()]],
       email: ['', [Validators.required, Validators.email]],
-      dataNascimento: ['', [
+      data_nascimento: ['', [
         Validators.required, 
         this.onlyNumbersValidator(),
         Validators.pattern(/^\d{8}$/)
@@ -75,7 +75,7 @@ export class EditarCliente implements OnInit {
         this.editarForm.patchValue({
           nome: cliente.nome,
           email: cliente.email,
-          dataNascimento: cliente.data_nascimento
+          data_nascimento: cliente.data_nascimento
         });
         
         this.clienteEncontrado = true;
@@ -115,7 +115,7 @@ export class EditarCliente implements OnInit {
       id_cliente: id,
       nome: this.editarForm.value.nome,
       email: this.editarForm.value.email,
-      data_nascimento: this.editarForm.value.dataNascimento
+      data_nascimento: this.editarForm.value.data_nascimento
     };
     
     this.clienteService.putClient(clienteAtualizado).subscribe({
