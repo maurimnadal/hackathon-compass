@@ -58,6 +58,21 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
+    // Retorna a lista de contas de um cliente após validar o ID e verificar se o cliente existe
+    public List<Account> getAccountsByCustomerId(Long customerId) {
+        // Validate customer ID
+        if (customerId == null || customerId < 1 || customerId > 99999) {
+            throw new IllegalArgumentException("Invalid customer ID");
+        }
+
+        // Check if customer exists
+        if (!customerRepository.existsById(customerId)) {
+            throw new IllegalArgumentException("Customer not found");
+        }
+
+        return accountRepository.findByCustomerId(customerId);
+    }
+    
     @Transactional
     public Transaction processDeposit(TransactionDTO transactionDTO) {
         validateTransactionAmount(transactionDTO.getAmount());
