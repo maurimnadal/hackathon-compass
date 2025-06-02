@@ -22,8 +22,8 @@ export class ContaService {
   }
 
   //faz um depósito em uma conta
-  postDeposit(conta: Conta, account_id: number): Observable<Conta> {
-    return this.http.post<Conta>(`${this.apiUrl}accounts/${account_id}/deposit`, conta);
+  postDeposit(amount: number, account_id: number): Observable<Conta> {
+    return this.http.post<Conta>(`${this.apiUrl}accounts/${account_id}/deposit`, amount);
   }
 
   //faz um saque em uma conta
