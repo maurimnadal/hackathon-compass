@@ -7,7 +7,7 @@ import { Cliente } from '../../models/cliente/cliente';
   providedIn: 'root'
 })
 export class ClienteService {
-  private apiUrl = 'http://127.0.0.1:5000/'; 
+  private apiUrl = 'http://localhost:8080/api/'; 
   
   constructor(private http: HttpClient) {}
 
@@ -17,13 +17,13 @@ export class ClienteService {
   }
 
   //adicionar um cliente
-  postClient(cliente: Cliente): Observable<Cliente> {
-    return this.http.post<Cliente>(`${this.apiUrl}customers`, cliente);
+  postClient(cliente: Cliente | Omit<Cliente, "contas">): Observable<Omit<Cliente, "contas">> {
+    return this.http.post<Omit<Cliente, "contas">>(`${this.apiUrl}customers`, cliente);
   }
 
   //atualizar um cliente
-  putClient(cliente: Cliente): Observable<Cliente> {
-    return this.http.put<Cliente>(`${this.apiUrl}customers/${cliente.id_cliente}`, cliente);
+  putClient(cliente: Omit<Cliente, "contas">): Observable<Omit<Cliente, "contas">> {
+    return this.http.put<Omit<Cliente, "contas">>(`${this.apiUrl}customers/${cliente.id_cliente}`, cliente);
   }
 
   

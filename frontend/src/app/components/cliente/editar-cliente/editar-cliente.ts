@@ -6,6 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { ClienteService } from '../../../services/cliente/cliente.service';
+import { Cliente } from '../../../models/cliente/cliente';
 
 @Component({
   selector: 'app-editar-cliente',
@@ -26,17 +28,18 @@ export class EditarCliente implements OnInit {
   buscaForm!: FormGroup;
   editarForm!: FormGroup;
   
-  clienteAtual = {
-    nome: '',
-    email: '',
-    dataNascimento: ''
-  };
+  clienteAtual: Cliente | null = null;
   
   clienteEncontrado = false;
   atualizacaoSucesso = false;
   idNaoEncontrado = false;
+  errorMessage = '';
+  isLoading = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private clienteService: ClienteService
+  ) {}
 
   ngOnInit() {
     this.buscaForm = this.fb.group({
@@ -48,8 +51,8 @@ export class EditarCliente implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       dataNascimento: ['', [
         Validators.required, 
-        this.onlyNumbersValidator(),  // Verifica se contém apenas números
-        Validators.pattern(/^\d{8}$/)  // Verifica se tem exatamente 8 dígitos
+        this.onlyNumbersValidator(),
+        Validators.pattern(/^\d{8}$/)
       ]]
     });
   }
@@ -61,32 +64,37 @@ export class EditarCliente implements OnInit {
     }
 
     const id = this.buscaForm.get('id')?.value;
+    this.isLoading = true;
+    this.errorMessage = '';
     
-    // Simulando busca de cliente
-    console.log('Buscando cliente com ID:', id);
-    
-    // Simulando verificação de ID existente (para demonstração, vamos considerar que o ID 00002 existe)
-    if (id === '00002') {
-      // Simulando dados retornados do backend
-      this.clienteAtual = {
-        nome: 'sla',
-        email: 'sla@gmail.com',
-        dataNascimento: '20051214'
-      };
-      
-      // Preenchendo o formulário de edição com os valores atuais
-      // this.editarForm.patchValue({
-      //   nome: this.clienteAtual.nome,
-      //   email: this.clienteAtual.email,
-      //   dataNascimento: this.clienteAtual.dataNascimento
-      // });
-      
-      this.clienteEncontrado = true;
-      this.idNaoEncontrado = false;
-    } else {
-      this.idNaoEncontrado = true;
-      this.clienteEncontrado = false;
-    }
+    this.clienteService.getClient(id).subscribe({
+      next: (cliente) => {
+        this.clienteAtual = cliente;
+        
+        // Preenchendo o formulário de edição com os valores atuais
+        this.editarForm.patchValue({
+          nome: cliente.nome,
+          email: cliente.email,
+          dataNascimento: cliente.data_nascimento
+        });
+        
+        this.clienteEncontrado = true;
+        this.idNaoEncontrado = false;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Erro ao buscar cliente:', err);
+        this.idNaoEncontrado = true;
+        this.clienteEncontrado = false;
+        this.isLoading = false;
+        
+        if (err.status === 404) {
+          this.errorMessage = 'Cliente não encontrado com este ID.';
+        } else {
+          this.errorMessage = 'Ocorreu um erro ao buscar o cliente. Por favor, tente novamente.';
+        }
+      }
+    });
   }
 
   onSubmit() {
@@ -99,29 +107,38 @@ export class EditarCliente implements OnInit {
       return;
     }
     
-    // Simulando atualização de cliente
-    const clienteAtualizado = {
-      id: this.buscaForm.get('id')?.value,
-      ...this.editarForm.value
+    const id = this.buscaForm.get('id')?.value;
+    this.isLoading = true;
+    this.errorMessage = '';
+    
+    const clienteAtualizado: Omit<Cliente, "contas" > = {
+      id_cliente: id,
+      nome: this.editarForm.value.nome,
+      email: this.editarForm.value.email,
+      data_nascimento: this.editarForm.value.dataNascimento
     };
     
-    console.log('Atualizando cliente:', clienteAtualizado);
-    
-    // Simulando uma atualização bem-sucedida
-    this.atualizacaoSucesso = true;
+    this.clienteService.putClient(clienteAtualizado).subscribe({
+      next: () => {
+        this.atualizacaoSucesso = true;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Erro ao atualizar cliente:', err);
+        this.errorMessage = 'Ocorreu um erro ao atualizar o cliente. Por favor, tente novamente.';
+        this.isLoading = false;
+      }
+    });
   }
   
   resetForm() {
     this.buscaForm.reset();
     this.editarForm.reset();
-    this.clienteAtual = {
-      nome: '',
-      email: '',
-      dataNascimento: ''
-    };
+    this.clienteAtual = null;
     this.clienteEncontrado = false;
     this.atualizacaoSucesso = false;
     this.idNaoEncontrado = false;
+    this.errorMessage = '';
   }
 
   // Validador personalizado para não permitir números

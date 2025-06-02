@@ -6,16 +6,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { ClienteService } from '../../../services/cliente/cliente.service';
+import { Cliente } from '../../../models/cliente/cliente';
 
 @Component({
   selector: 'app-registrar-cliente',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    CommonModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
+    ReactiveFormsModule, 
+    CommonModule, 
+    MatCardModule, 
+    MatFormFieldModule, 
+    MatInputModule, 
     MatButtonModule,
     MatIconModule
   ],
@@ -26,26 +28,45 @@ export class RegistrarCliente implements OnInit {
   clienteForm!: FormGroup;
   registroSucesso = false;
   clienteId = '';
+  errorMessage = '';
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private clienteService: ClienteService
+  ) {}
 
   ngOnInit() {
     this.clienteForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(1), this.noNumbersValidator()]],
       email: ['', [Validators.required, Validators.email]],
       dataNascimento: ['', [
-        Validators.required,
-        this.onlyNumbersValidator(),  // Verifica se contém apenas números
-        Validators.pattern(/^\d{8}$/)  // Verifica se tem exatamente 8 dígitos
+        Validators.required, 
+        this.onlyNumbersValidator(),
+        Validators.pattern(/^\d{8}$/)
       ]]
     });
   }
 
   onSubmit() {
     if (this.clienteForm.valid) {
-      // Simulando o registro e geração de ID
-      this.clienteId = this.gerarId();
-      this.registroSucesso = true;
+
+      const cliente: Omit<Cliente, "contas"> = {
+        id_cliente: null,
+        nome: this.clienteForm.value.nome,
+        email: this.clienteForm.value.email,
+        data_nascimento: this.clienteForm.value.dataNascimento
+      };
+      
+      this.clienteService.postClient(cliente).subscribe({
+        next: (response) => {
+          this.clienteId = response.id_cliente?.toString() || '';
+          this.registroSucesso = true;
+        },
+        error: (err) => {
+          console.error('Erro ao registrar cliente:', err);
+          this.errorMessage = 'Ocorreu um erro ao registrar o cliente. Por favor, tente novamente.';
+        }
+      });
     } else {
       // Marca todos os campos como tocados para mostrar os erros
       Object.keys(this.clienteForm.controls).forEach(key => {
@@ -58,35 +79,25 @@ export class RegistrarCliente implements OnInit {
   resetForm() {
     this.clienteForm.reset();
     this.registroSucesso = false;
+    this.errorMessage = '';
   }
 
   // Validador personalizado para não permitir números
   noNumbersValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
+    return (control: AbstractControl): {[key: string]: any} | null => {
       const hasNumbers = /[0-9]/.test(control.value);
-      return hasNumbers ? { 'containsNumbers': { value: control.value } } : null;
+      return hasNumbers ? {'containsNumbers': {value: control.value}} : null;
     };
   }
-
+  
   // Validador personalizado para permitir apenas números
   onlyNumbersValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
+    return (control: AbstractControl): {[key: string]: any} | null => {
       if (!control.value) {
         return null; // Não validar campo vazio
       }
       const hasNonNumbers = /[^0-9]/.test(control.value);
-      return hasNonNumbers ? { 'onlyNumbers': { value: control.value } } : null;
+      return hasNonNumbers ? {'onlyNumbers': {value: control.value}} : null;
     };
-  }
-
-  // Variável estática para simular persistência entre chamadas
-  private static ultimoId = 0;
-
-  private gerarId(): string {
-    // Incrementa o ID para cada novo cliente
-    RegistrarCliente.ultimoId++;
-
-    // Formata o ID com zeros à esquerda (00001, 00002, etc.)
-    return String(RegistrarCliente.ultimoId).padStart(5, '0');
   }
 }
