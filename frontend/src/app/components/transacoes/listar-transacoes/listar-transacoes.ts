@@ -9,6 +9,9 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClient } from '@angular/common/http';
+import { ContaService } from '../../../services/conta/conta.service';
+import { Conta } from '../../../models/conta/conta';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-listar-transacoes',
@@ -36,6 +39,8 @@ export class ListarTransacoes {
   transacoes: any[] = [];
   mensagem: string = '';
 
+  constructor(private contaService: ContaService) {}
+
   listarTransacoes() {
     if (!this.numeroConta || !this.dataInicio || !this.dataFim) {
       this.mensagem = 'Preencha todos os campos.';
@@ -48,7 +53,20 @@ export class ListarTransacoes {
       dataFim: this.dataFim.toISOString(),
     };
 
-    this.http.post<any[]>('http://localhost:3000/transacoes', body).subscribe({
+    /*this.http.post<any[]>('http://localhost:3000/transacoes', body).subscribe({
+      next: (res) => {
+        this.transacoes = res;
+        this.mensagem = res.length === 0 ? 'Nenhuma transação encontrada.' : '';
+      },
+      error: () => {
+        this.mensagem = 'Erro ao buscar transações.';
+        this.transacoes = [];
+      },
+    });*/
+
+    /*service*/
+
+    this.contaService.getTransactions().subscribe({
       next: (res) => {
         this.transacoes = res;
         this.mensagem = res.length === 0 ? 'Nenhuma transação encontrada.' : '';
