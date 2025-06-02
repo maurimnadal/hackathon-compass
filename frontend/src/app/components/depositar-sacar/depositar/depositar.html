@@ -1,0 +1,36 @@
+<mat-card class="depositar-card">
+  <h2>Depositar Valor</h2>
+  <form (ngSubmit)="depositar()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Número da Conta</mat-label>
+      <input matInput type="string" required [(ngModel)]="numeroConta" name="numeroConta" placeholder="Número da Conta">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Valor do Depósito</mat-label>
+      <input matInput type="number" required [(ngModel)]="valor" name="valor" placeholder="Valor do Depósito">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Depositar</button>
+  </form>
+  <mat-card *ngIf="mensagem" class="mensagem" style="margin-top: 16px;">
+    {{ mensagem }}
+  </mat-card>
+</mat-card>
+
+<style>
+.depositar-card {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 24px;
+}
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+.mensagem {
+  color: #1976d2;
+  font-weight: bold;
+  text-align: center;
+}
+</style>
