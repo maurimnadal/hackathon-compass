@@ -3,13 +3,10 @@ package com.example.service;
 import com.example.dto.CustomerDTO;
 import com.example.model.Customer;
 import com.example.repository.CustomerRepository;
+import com.example.util.DateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -25,17 +22,22 @@ public class CustomerService {
     }
 
     public Customer createCustomer(CustomerDTO customerDTO) throws IllegalArgumentException {
-        validateCustomerData(customerDTO);
+        validateCustomerData(customerDTO, null);
 
         Customer customer = new Customer();
         customer.setName(customerDTO.getName());
         customer.setEmail(customerDTO.getEmail().trim().toLowerCase());
-        customer.setBirthday(parseBirthday(customerDTO.getBirthday()));
+        customer.setBirthday(DateValidator.parseDate(customerDTO.getBirthday()));
 
         return customerRepository.save(customer);
     }
 
-    private void validateCustomerData(CustomerDTO customerDTO) {
+    private void validateCustomerData(CustomerDTO customerDTO, Long idCostumer) {
+        // Validate name
+        if (customerDTO.getName() == null || customerDTO.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+
         // Validate email
         if (customerDTO.getEmail() == null || customerDTO.getEmail().trim().isEmpty()) {
             throw new IllegalArgumentException("Email cannot be empty");
@@ -45,42 +47,17 @@ public class CustomerService {
         if (!EMAIL_PATTERN.matcher(email).matches()) {
             throw new IllegalArgumentException("Invalid email format");
         }
-        
+
         // Check if email is already registered
-        if (customerRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException("Email is already registered");
+        Optional<Customer> existing = customerRepository.findByEmail(email);
+        if (existing.isPresent()) {
+            Long existingId = existing.get().getId();
+            if (!existingId.equals(idCostumer)) {
+                throw new IllegalArgumentException("Email is already registered.");
+            }
         }
 
         // Validate birthday
-        if (customerDTO.getBirthday() == null || customerDTO.getBirthday().length() != 8) {
-            throw new IllegalArgumentException("Birthday must be 8 digits in YYYYMMDD format");
-        }
-
-        try {
-            LocalDate birthday = parseBirthday(customerDTO.getBirthday());
-            LocalDate now = LocalDate.now();
-
-            if (birthday.isAfter(now)) {
-                throw new IllegalArgumentException("Birthday cannot be in the future");
-            }
-
-            if (birthday.getYear() < 1900) {
-                throw new IllegalArgumentException("Year must be 1900 or later");
-            }
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid birthday format. Must be YYYYMMDD");
-        }
-    }
-
-    private LocalDate parseBirthday(String birthdayStr) {
-        if (birthdayStr == null || birthdayStr.length() != 8) {
-            throw new IllegalArgumentException("Birthday must be 8 digits in YYYYMMDD format");
-        }
-
-        try {
-            return LocalDate.parse(birthdayStr, DateTimeFormatter.ofPattern("yyyyMMdd"));
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid birthday format. Must be YYYYMMDD");
-        }
+        DateValidator.validateDate(customerDTO.getBirthday());
     }
 }
