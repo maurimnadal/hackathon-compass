@@ -54,7 +54,7 @@
 
     <mat-card *ngFor="let t of transacoes" style="margin-bottom: 12px">
       <mat-card-content>
-        <p><strong>Conta:</strong> {{ t.id }}</p>
+        <p><strong>Conta:</strong> {{ t.conta }}</p>
         <p><strong>Tipe:</strong> {{ t.tipo }}</p>
         <p><strong>Valor:</strong> {{ t.valor | currency }}</p>
         <p><strong>Período:</strong> {{ t.data }}</p>

@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { CommonModule } from '@angular/common';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-listar-transacoes',
@@ -27,6 +28,8 @@ import { MatNativeDateModule } from '@angular/material/core';
   styleUrls: ['./listar-transacoes.css'],
 })
 export class ListarTransacoes {
+  private http = inject(HttpClient);
+
   numeroConta: string = '';
   dataInicio: Date | null = null;
   dataFim: Date | null = null;
@@ -34,15 +37,27 @@ export class ListarTransacoes {
   mensagem: string = '';
 
   listarTransacoes() {
-    // Simulated response
-    if (this.numeroConta === '123') {
-      this.transacoes = [
-        { id: '001', tipo: 'Depósito', valor: 1000, data: '2024-01-01' },
-      ];
-      this.mensagem = '';
-    } else {
-      this.transacoes = [];
-      this.mensagem = 'Nenhuma transação encontrada para esse número de conta.';
+    console.log('erm');
+    if (!this.numeroConta || !this.dataInicio || !this.dataFim) {
+      this.mensagem = 'Preencha todos os campos.';
+      return;
     }
+
+    const body = {
+      userId: this.numeroConta,
+      dataInicio: this.dataInicio.toISOString(),
+      dataFim: this.dataFim.toISOString(),
+    };
+
+    this.http.post<any[]>('http://localhost:3000/transacoes', body).subscribe({
+      next: (res) => {
+        this.transacoes = res;
+        this.mensagem = res.length === 0 ? 'Nenhuma transação encontrada.' : '';
+      },
+      error: () => {
+        this.mensagem = 'Erro ao buscar transações.';
+        this.transacoes = [];
+      },
+    });
   }
 }
