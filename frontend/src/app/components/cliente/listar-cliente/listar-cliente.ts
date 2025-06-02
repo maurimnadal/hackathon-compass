@@ -5,20 +5,8 @@ import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
-export interface Conta {
-  id_conta: number;
-  tipo: string;
-  saldo: number;
-}
-
-export interface Cliente {
-  id_cliente: number;
-  nome: string;
-  email: string;
-  data_nascimento: Date;
-  contas: Conta[];
-}
+import { Cliente } from '../../../models/cliente';
+import { ClienteService } from '../../../services/cliente.service';
 
 @Component({
   selector: 'app-listar-cliente',
@@ -38,22 +26,19 @@ export class ListarCliente {
     return Number(saldo) < 0;
   }
 
-  clientes: Cliente[] = [
-    {
-      id_cliente: 1,
-      nome: 'João Silva',
-      email: 'joao@email.com',
-      data_nascimento: new Date(1990, 4, 15), // formato YYYY, MM (0-based), DD
-      contas: [
-        { id_conta: 101, tipo: 'Corrente', saldo: -1500.75 },
-        { id_conta: 102, tipo: 'Poupança', saldo: 3200.00 },
-        { id_conta: 101, tipo: 'Corrente', saldo: 1500.75 },
-      ]
-    }
-  ];
+  clientes: Cliente[] = [];
+
+  constructor(private clienteService: ClienteService) {}
+
+  ngOnInit(): void {
+    this.clienteService.getClient(this.clienteId).subscribe({
+      next: (data) => this.clientes = data,
+      error: (err) => console.error('Erro ao buscar clientes:', err)
+    });
+  }
 
 
-  constructor() {
+  /*constructor() {
     // Converte data_nascimento para Date se vier como string YYYYMMDD
     this.clientes.forEach(cliente => {
       if (typeof cliente.data_nascimento === 'string') {
@@ -65,7 +50,7 @@ export class ListarCliente {
         );
       }
     });
-  }
+  }*/
 
   buscarCliente() {
     this.buscou = true;
