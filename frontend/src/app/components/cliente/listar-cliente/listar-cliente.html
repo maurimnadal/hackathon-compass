@@ -1,0 +1,50 @@
+<main class="container-listar-cliente">
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Digite o ID do Cliente</mat-label>
+    <input matInput type="number" min="1" [(ngModel)]="clienteId" placeholder="ID do cliente" >
+  </mat-form-field>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="buscarCliente()"
+    class="button-form">
+    Buscar
+  </button>
+
+
+  <ng-container *ngIf="clienteSelecionado">
+    <mat-card class="client-card">
+      <mat-card-header>
+        <mat-card-title>{{ clienteSelecionado.nome }}</mat-card-title>
+        <mat-card-subtitle>ID: {{ clienteSelecionado.id_cliente }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Email:</strong> {{ clienteSelecionado.email }}</p>
+        <p><strong>Data de Nascimento:</strong> {{ clienteSelecionado.data_nascimento | date:'dd/MM/yyyy' }}</p>
+
+
+        <div class="account-container">
+          <strong>Contas:</strong>
+          <div class="accounts">
+            <mat-card *ngFor="let conta of clienteSelecionado.contas" class="account">
+              <mat-card-content>
+                <p><strong>ID:</strong> {{ conta.id_conta }}</p>
+                <p><strong>Tipo:</strong> {{ conta.tipo }}</p>
+                <p>
+                  <strong>Saldo:</strong>
+                  <span [ngClass]="{ 'negativo': (+conta.saldo) < 0 }">
+                    {{ conta.saldo | currency:'BRL':'symbol':'1.2-2' }}
+                  </span>
+                </p>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+
+  <div *ngIf="buscou && !clienteSelecionado" class="message">
+    Cliente não encontrado.
+  </div>
+</main>
