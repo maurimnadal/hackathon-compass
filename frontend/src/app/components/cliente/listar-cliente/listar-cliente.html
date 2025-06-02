@@ -1,18 +1,19 @@
-<main class="containerListarCliente">
-  <mat-form-field appearance="outline" style="width: 32.5%; min-width: 250px;">
+<main class="container-listar-cliente">
+  <mat-form-field appearance="outline" class="form-field">
     <mat-label>Digite o ID do Cliente</mat-label>
-    <input matInput type="number" min="1" [(ngModel)]="clienteId" placeholder="ID do cliente">
+    <input matInput type="number" min="1" [(ngModel)]="clienteId" placeholder="ID do cliente" >
   </mat-form-field>
-  <button 
-    mat-raised-button 
-    color="primary" 
-    (click)="buscarCliente()" 
-    style="width: 32.5%; min-width: 250px; height: 48px; font-size: 1.1rem; font-weight: 500; letter-spacing: 1px; margin-bottom: 1.5rem; box-shadow: 0 2px 8px #1976d21a;">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="buscarCliente()"
+    class="button-form">
     Buscar
   </button>
 
+
   <ng-container *ngIf="clienteSelecionado">
-    <mat-card class="cliente-card" style="width: 50%; min-width: 300px;">
+    <mat-card class="client-card">
       <mat-card-header>
         <mat-card-title>{{ clienteSelecionado.nome }}</mat-card-title>
         <mat-card-subtitle>ID: {{ clienteSelecionado.id_cliente }}</mat-card-subtitle>
@@ -20,14 +21,21 @@
       <mat-card-content>
         <p><strong>Email:</strong> {{ clienteSelecionado.email }}</p>
         <p><strong>Data de Nascimento:</strong> {{ clienteSelecionado.data_nascimento | date:'dd/MM/yyyy' }}</p>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+
+
+        <div class="account-container">
           <strong>Contas:</strong>
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <mat-card *ngFor="let conta of clienteSelecionado.contas" style="background: #f5f5f5;">
+          <div class="accounts">
+            <mat-card *ngFor="let conta of clienteSelecionado.contas" class="account">
               <mat-card-content>
                 <p><strong>ID:</strong> {{ conta.id_conta }}</p>
                 <p><strong>Tipo:</strong> {{ conta.tipo }}</p>
-                <p><strong>Saldo:</strong> {{ conta.saldo | currency:'BRL':'symbol':'1.2-2' }}</p>
+                <p>
+                  <strong>Saldo:</strong>
+                  <span [ngClass]="{ 'negativo': (+conta.saldo) < 0 }">
+                    {{ conta.saldo | currency:'BRL':'symbol':'1.2-2' }}
+                  </span>
+                </p>
               </mat-card-content>
             </mat-card>
           </div>
@@ -36,7 +44,7 @@
     </mat-card>
   </ng-container>
 
-  <div *ngIf="buscou && !clienteSelecionado" style="color: red; margin-top: 1rem;">
+  <div *ngIf="buscou && !clienteSelecionado" class="message">
     Cliente não encontrado.
   </div>
 </main>

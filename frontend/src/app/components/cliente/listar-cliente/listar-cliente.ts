@@ -34,19 +34,38 @@ export class ListarCliente {
   buscou = false;
   clienteSelecionado: Cliente | null = null;
 
+  isNegativo(saldo: any): boolean {
+    return Number(saldo) < 0;
+  }
+
   clientes: Cliente[] = [
     {
       id_cliente: 1,
       nome: 'João Silva',
       email: 'joao@email.com',
-      data_nascimento: new Date(1990, 4, 15),
+      data_nascimento: new Date(1990, 4, 15), // formato YYYY, MM (0-based), DD
       contas: [
-        { id_conta: 101, tipo: 'Corrente', saldo: 1500.75 },
+        { id_conta: 101, tipo: 'Corrente', saldo: -1500.75 },
         { id_conta: 102, tipo: 'Poupança', saldo: 3200.00 },
         { id_conta: 101, tipo: 'Corrente', saldo: 1500.75 },
       ]
     }
   ];
+
+
+  constructor() {
+    // Converte data_nascimento para Date se vier como string YYYYMMDD
+    this.clientes.forEach(cliente => {
+      if (typeof cliente.data_nascimento === 'string') {
+        const str = cliente.data_nascimento as string;
+        cliente.data_nascimento = new Date(
+          Number(str.substring(0, 4)),
+          Number(str.substring(4, 6)) - 1,
+          Number(str.substring(6, 8))
+        );
+      }
+    });
+  }
 
   buscarCliente() {
     this.buscou = true;
