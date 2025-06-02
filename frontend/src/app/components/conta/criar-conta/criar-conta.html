@@ -1,0 +1,32 @@
+<h2>Criar Conta</h2>
+
+<form (ngSubmit)="onSubmit()" #formConta="ngForm">
+  <div>
+    <label for="clienteId">ID do Cliente</label>
+    <input
+      type="text"
+      id="clienteId"
+      name="clienteId"
+      [(ngModel)]="clienteId"
+      required
+    />
+  </div>
+
+  <div>
+    <label for="tipoConta">Tipo de Conta</label>
+    <select
+      id="tipoConta"
+      name="tipoConta"
+      [(ngModel)]="tipoConta"
+      required
+    >
+      <option value="" disabled selected>Selecione</option>
+      <option value="corrente">Conta Corrente</option>
+      <option value="poupanca">Conta Poupança</option>
+    </select>
+  </div>
+
+  <button type="submit" [disabled]="formConta.invalid">Criar Conta</button>
+
+  <p *ngIf="mensagem">{{ mensagem }}</p>
+</form>
