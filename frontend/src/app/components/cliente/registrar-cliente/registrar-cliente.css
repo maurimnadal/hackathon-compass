@@ -1,0 +1,46 @@
+.secao {
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+  margin-top: 5px;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.success-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.success-container mat-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  margin-bottom: 10px;
+}
+
+.success-container p {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.id-display {
+  font-weight: bold;
+  font-size: 20px;
+}
