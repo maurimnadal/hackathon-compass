@@ -1,1 +1,41 @@
-<p>Bem Vindo!!</p>
+<div class="container">
+  <header class="header">
+    <mat-toolbar color="primary">
+      <span>Banco Compass.UOL</span>
+      <div class="nav-links">
+        <!-- Cliente -->
+        <button mat-button [matMenuTriggerFor]="clienteMenu">Clientes</button>
+        <mat-menu #clienteMenu="matMenu">
+          <a mat-menu-item routerLink="/registrar-cliente">Registrar Cliente</a>
+          <a mat-menu-item routerLink="/editar-cliente">Editar Cliente</a>
+          <a mat-menu-item routerLink="/listar-cliente">Listar Cliente</a>
+        </mat-menu>
+
+        <!-- Conta -->
+        <a mat-button routerLink="/criar-conta">Criar Conta</a>
+
+        <!-- Operações -->
+        <button mat-button [matMenuTriggerFor]="operacoesMenu">Operações</button>
+        <mat-menu #operacoesMenu="matMenu">
+          <a mat-menu-item routerLink="/depositar">Depositar</a>
+          <a mat-menu-item routerLink="/sacar">Sacar</a>
+        </mat-menu>
+
+        <!-- Transações -->
+        <a mat-button routerLink="/listar-transacoes">Transações</a>
+      </div>
+    </mat-toolbar>
+  </header>
+
+  <main class="content">
+    <mat-card>
+      <mat-card-content>
+        <div class="welcome-message">
+          <mat-icon class="welcome-icon">account_balance</mat-icon>
+          <h1>Bem-vindo ao Sistema Bancário Compass.UOL</h1>
+          <p>Selecione uma opção no menu acima para começar</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </main>
+</div>
