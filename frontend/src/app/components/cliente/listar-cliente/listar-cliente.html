@@ -30,12 +30,7 @@
               <mat-card-content>
                 <p><strong>ID:</strong> {{ conta.id_conta }}</p>
                 <p><strong>Tipo:</strong> {{ conta.tipo }}</p>
-                <p>
-                  <strong>Saldo:</strong>
-                  <span [ngClass]="{ 'negativo': (+conta.saldo) < 0 }">
-                    {{ conta.saldo | currency:'BRL':'symbol':'1.2-2' }}
-                  </span>
-                </p>
+                <p><strong>Saldo:</strong> {{ conta.saldo | currency:'BRL':'symbol':'1.2-2' }}</p>
               </mat-card-content>
             </mat-card>
           </div>

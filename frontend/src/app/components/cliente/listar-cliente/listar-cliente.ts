@@ -22,10 +22,6 @@ export class ListarCliente {
   clienteSelecionado: Cliente | null = null;
   mensagem: string = '';
 
-  isNegativo(saldo: any): boolean {
-    return Number(saldo) < 0;
-  }
-
   constructor(private clienteService: ClienteService) {}
 
   buscarCliente() {
