@@ -32,6 +32,19 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
+    public Customer updateCustomer(Long id, CustomerDTO customerDTO) throws IllegalArgumentException {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found with id " + id));
+
+        validateCustomerData(customerDTO, id);
+
+        customer.setName(customerDTO.getName());
+        customer.setEmail(customerDTO.getEmail().trim().toLowerCase());
+        customer.setBirthday(DateValidator.parseDate(customerDTO.getBirthday()));
+
+        return customerRepository.save(customer);
+    }
+
     private void validateCustomerData(CustomerDTO customerDTO, Long idCostumer) {
         // Validate name
         if (customerDTO.getName() == null || customerDTO.getName().trim().isEmpty()) {
