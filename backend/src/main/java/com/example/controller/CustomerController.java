@@ -36,6 +36,23 @@ public class CustomerController {
         }
     }
 
+    @GetMapping("/{customerId}")
+    public ResponseEntity<CustomerDTO> obterCliente(@PathVariable("customerId") Long id) {
+        return customerService.findById(id)
+                .map(cliente -> {
+                    // Converter LocalDate para String no formato YYYYMMDD
+                    String birthday = cliente.getBirthday().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+                    
+                    CustomerDTO dto = new CustomerDTO(
+                        cliente.getName(),
+                        cliente.getEmail(),
+                        birthday
+                    );
+                    return ResponseEntity.ok(dto);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
         try {
