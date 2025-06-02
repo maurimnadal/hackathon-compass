@@ -45,7 +45,11 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
-    private void validateCustomerData(CustomerDTO customerDTO, Long idCostumer) {
+    public Optional<Customer> findById(Long id) {
+        return customerRepository.findById(id);
+    }
+
+    private void validateCustomerData(CustomerDTO customerDTO, Long idCustomer) {
         // Validate name
         if (customerDTO.getName() == null || customerDTO.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
@@ -65,7 +69,7 @@ public class CustomerService {
         Optional<Customer> existing = customerRepository.findByEmail(email);
         if (existing.isPresent()) {
             Long existingId = existing.get().getId();
-            if (!existingId.equals(idCostumer)) {
+            if (idCustomer == null || !existingId.equals(idCustomer)) {
                 throw new IllegalArgumentException("Email is already registered.");
             }
         }

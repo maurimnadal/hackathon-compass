@@ -1,23 +1,20 @@
 package com.example.dto;
 
-/**
- * Data Transfer Object para informações de conta
- */
 public class AccountDTO {
     private Long customerId;
-    private String accountType; // "S" para Savings (Poupança) ou "C" para Checking (Corrente)
+    private String accountType;
 
-    // Construtor padrão
+    // Default constructor
     public AccountDTO() {
     }
 
-    // Construtor com todos os campos
+    // Constructor with all fields
     public AccountDTO(Long customerId, String accountType) {
         this.customerId = customerId;
         this.accountType = accountType;
     }
 
-    // Getters e Setters
+    // Getters and Setters
     public Long getCustomerId() {
         return customerId;
     }

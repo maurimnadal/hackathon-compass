@@ -1,15 +1,14 @@
 package com.example.controller;
 
 import com.example.dto.CustomerDTO;
-
 import com.example.model.Customer;
-
 import com.example.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 

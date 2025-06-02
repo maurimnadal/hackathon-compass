@@ -7,8 +7,16 @@ import java.time.LocalDate;
 @Table(name = "customers")
 public class Customer {
     @Id
-    @SequenceGenerator(name = "customer_seq", sequenceName = "customer_seq", initialValue = 100001, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")
+    @SequenceGenerator(
+        name = "customer_seq",
+        sequenceName = "customer_seq",
+        initialValue = 1,
+        allocationSize = 1
+    )
+    @GeneratedValue(
+        strategy = GenerationType.SEQUENCE,
+        generator = "customer_seq"
+    )
     private Long id;
 
     @Column(nullable = false)
@@ -24,7 +32,7 @@ public class Customer {
     public Customer() {
     }
 
-    // Construtor com todos os campos exceto o ID
+    // Constructor with all fields except id
     public Customer(String name, String email, LocalDate birthday) {
         this.name = name;
         this.email = email;

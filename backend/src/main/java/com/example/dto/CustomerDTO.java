@@ -1,12 +1,9 @@
 package com.example.dto;
 
-/**
- * Data Transfer Object for Customer information
- */
 public class CustomerDTO {
     private String name;
     private String email;
-    private String birthday; // Format: YYYYMMDD
+    private String birthday;
 
     // Default constructor
     public CustomerDTO() {
