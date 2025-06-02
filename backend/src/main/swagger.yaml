@@ -1,0 +1,345 @@
+openapi: 3.0.3
+info:
+  title: Modern Banking System API
+  description: API for the modernized banking system
+  version: 1.0.1
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local API Gateway
+
+tags:
+  - name: customers
+    description: Customer operations
+  - name: accounts
+    description: Account operations
+  - name: transactions
+    description: Transaction operations
+
+paths:
+  /customers:
+    post:
+      tags: [customers]
+      summary: Register a customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerDTO'
+      responses:
+        '201':
+          description: Customer registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /customers/{customerId}:
+    get:
+      tags: [customers]
+      summary: Get customer data
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Customer data retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      tags: [customers]
+      summary: Update customer information
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerDTO'
+      responses:
+        '200':
+          description: Customer updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /accounts:
+    post:
+      tags: [accounts]
+      summary: Create a new account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountDTO'
+      responses:
+        '201':
+          description: Account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /accounts/{accountId}/deposit:
+    post:
+      tags: [accounts]
+      summary: Deposit funds into an account
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionDTO'
+      responses:
+        '201':
+          description: Deposit successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /accounts/{accountId}/withdraw:
+    post:
+      tags: [accounts]
+      summary: Withdraw funds from an account
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionDTO'
+      responses:
+        '201':
+          description: Withdrawal successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /accounts/customer/{customerId}:
+    get:
+      tags: [accounts]
+      summary: List customer accounts
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: List of accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /transactions/report:
+    get:
+      tags: [transactions]
+      summary: Get transaction report
+      parameters:
+        - name: customerId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: startDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Transaction report list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+        birthday:
+          type: string
+          format: date
+
+    CustomerDTO:
+      type: object
+      required: [name, email, birthday]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        birthday:
+          type: string
+          description: Format YYYYMMDD
+
+    Account:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        customer:
+          $ref: '#/components/schemas/Customer'
+        accountType:
+          type: string
+          enum: [SAVINGS, CHECKING]
+        balance:
+          type: number
+          format: double
+
+    AccountDTO:
+      type: object
+      required: [customerId, accountType]
+      properties:
+        customerId:
+          type: integer
+          format: int64
+        accountType:
+          type: string
+          enum: [S, C]
+          description: "S for Savings, C for Checking"
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        account:
+          $ref: '#/components/schemas/Account'
+        type:
+          type: string
+          enum: [DEPOSIT, WITHDRAWAL]
+        amount:
+          type: number
+          format: double
+        timestamp:
+          type: string
+          format: date-time
+
+    TransactionDTO:
+      type: object
+      required: [amount]
+      properties:
+        accountId:
+          type: integer
+          format: int64
+        amount:
+          type: number
+          format: double
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
