@@ -1,8 +1,8 @@
 package com.example.controller;
 
 import com.example.dto.AccountDTO;
-import com.example.dto.TransactionDTO;
 import com.example.dto.AccountResponseDTO;
+import com.example.dto.TransactionDTO;
 import com.example.dto.TransactionResponseDTO;
 import com.example.model.Account;
 import com.example.model.Transaction;
@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List; 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -43,7 +43,6 @@ public class AccountController {
         }
     }
     
-
     // Endpoint HTTP GET para buscar contas associadas a um cliente específico pelo ID
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<?> getAccountsByCustomerId(@PathVariable Long customerId) {
@@ -57,7 +56,6 @@ public class AccountController {
         }
     }
     
-
     @PostMapping("/{accountId}/deposit")
     public ResponseEntity<?> deposit(@PathVariable Long accountId, @RequestBody TransactionDTO transactionDTO) {
         try {
@@ -88,7 +86,6 @@ public class AccountController {
     @PostMapping("/{accountId}/withdraw")
     public ResponseEntity<?> sacar(@PathVariable("accountId") Long id, @RequestBody TransactionDTO transactionDTO) {
         try {
-
             if (transactionDTO.getAccountId() == null) {
                 transactionDTO = new TransactionDTO(id, transactionDTO.getAmount());
             } else if (!transactionDTO.getAccountId().equals(id)) {

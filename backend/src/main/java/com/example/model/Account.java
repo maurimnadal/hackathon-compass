@@ -3,7 +3,6 @@ package com.example.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-
 @Entity
 @Table(name = "accounts")
 public class Account {
@@ -20,7 +19,7 @@ public class Account {
     )
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
@@ -31,17 +30,17 @@ public class Account {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal balance;
 
-    // Enum para tipos de conta
+    // Enum for account types
     public enum AccountType {
-        SAVINGS, // Poupança
-        CHECKING // Corrente
+        SAVINGS, // Savings account
+        CHECKING // Checking account
     }
 
-    // Construtor padrão
+    // Default constructor
     public Account() {
     }
 
-    // Construtor com customer e accountType
+    // Constructor with customer and accountType
     public Account(Customer customer, AccountType accountType) {
         this.customer = customer;
         this.accountType = accountType;

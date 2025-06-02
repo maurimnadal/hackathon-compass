@@ -1,6 +1,7 @@
 package com.example.util;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -12,10 +13,27 @@ public class DateValidator {
 
         try {
             int month = Integer.parseInt(dateStr.substring(4, 6));
+            int day = Integer.parseInt(dateStr.substring(6, 8));
+            int year = Integer.parseInt(dateStr.substring(0, 4));
+
+            // Validate month
             if (month < 1 || month > 12) {
                 throw new IllegalArgumentException("Birthday month must be between 1 and 12");
             }
 
+            // Validate day using YearMonth
+            int maxDays = YearMonth.of(year, month).lengthOfMonth();
+            boolean isLeapYear = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+            
+            if (day < 1 || day > maxDays) {
+                String leapYearInfo = month == 2 ? (isLeapYear ? " (leap year)" : " (non-leap year)") : "";
+                throw new IllegalArgumentException(
+                        String.format("Invalid day %d for month %d%s",
+                                day, month, leapYearInfo)
+                );
+            }
+
+            // Now that we know the date is valid, parse it and do additional validations
             LocalDate birthday = parseDate(dateStr);
             LocalDate now = LocalDate.now();
 
@@ -27,25 +45,6 @@ public class DateValidator {
                 throw new IllegalArgumentException("Year must be between 1900 or current year");
             }
 
-            int day = Integer.parseInt(dateStr.substring(6, 8));
-            int year = Integer.parseInt(dateStr.substring(0, 4));
-
-            // Verify if it's a leap year
-            boolean isLeapYear = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
-
-            // Get the maximum number of days for the given month
-            int maxDays = switch (month) {
-                case 2 -> isLeapYear ? 29 : 28;
-                case 4, 6, 9, 11 -> 30;
-                default -> 31;
-            };
-
-            if (day < 1 || day > maxDays) {
-                throw new IllegalArgumentException(
-                        String.format("Invalid day %d for month %d%s",
-                                day, month, month == 2 ? (isLeapYear ? " (leap year)" : " (non-leap year)") : "")
-                );
-            }
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid birthday format. Must be YYYYMMDD");
         } catch (DateTimeParseException e) {

@@ -93,6 +93,36 @@ public class AccountService {
         accountRepository.save(account);
         return transactionRepository.save(transaction);
     }
+    
+    @Transactional
+    public Transaction processWithdrawal(TransactionDTO transactionDTO) {
+        validateTransactionAmount(transactionDTO.getAmount());
+
+        Account account = accountRepository.findById(transactionDTO.getAccountId())
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        // Check if account has sufficient funds
+        if (account.getBalance().compareTo(transactionDTO.getAmount()) < 0) {
+            throw new IllegalArgumentException("Insufficient funds");
+        }
+
+        // Create transaction
+        Transaction transaction = new Transaction(
+                account,
+                Transaction.TransactionType.WITHDRAWAL,
+                transactionDTO.getAmount());
+
+        // Update account balance
+        BigDecimal newBalance = account.getBalance().subtract(transactionDTO.getAmount());
+        account.setBalance(newBalance);
+
+        accountRepository.save(account);
+        return transactionRepository.save(transaction);
+    }
+
+    public Optional<Account> findById(Long id) {
+        return accountRepository.findById(id);
+    }
 
     private void validateTransactionAmount(BigDecimal amount) {
         if (amount == null) {
