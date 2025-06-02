@@ -1,8 +1,4 @@
-export interface Conta {
-  id_conta: number;
-  tipo: string;
-  saldo: number;
-}
+import { Conta } from "../conta/conta";
 
 export interface Cliente {
   id_cliente: number;
