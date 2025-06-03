@@ -4,13 +4,13 @@ import com.example.dto.TransactionReportDTO;
 import com.example.dto.TransactionReportItemDTO;
 import com.example.model.Customer;
 import com.example.model.Transaction;
+import com.example.repository.AccountRepository;
 import com.example.repository.CustomerRepository;
 import com.example.repository.TransactionRepository;
 import com.example.util.DateValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -21,14 +21,18 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final CustomerRepository customerRepository;
+    private final AccountRepository accountRepository;
 
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository, CustomerRepository customerRepository) {
+    public TransactionService(TransactionRepository transactionRepository, CustomerRepository customerRepository, AccountRepository accountRepository) {
         this.transactionRepository = transactionRepository;
         this.customerRepository = customerRepository;
+        this.accountRepository = accountRepository;
     }
 
     public TransactionReportDTO generateTransactionReport(Long customerId, String startDateStr, String endDateStr) {
+        // Validate start date
+        DateValidator.validateDate(startDateStr);
         // Validate and parse dates
         LocalDate startDate = DateValidator.parseDate(startDateStr);
         LocalDate endDate = DateValidator.parseDate(endDateStr);
@@ -38,9 +42,13 @@ public class TransactionService {
             throw new IllegalArgumentException("The end date cannot be earlier than the start date");
         }
 
+        if(endDate.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("The end date cannot be in the future");
+        }
+
         // Find customer
         Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new EntityNotFoundException("Costumer not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
 
         // Find transactions
         List<Transaction> transactions = transactionRepository.findByCustomerIdAndDateRange(
