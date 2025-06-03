@@ -148,7 +148,7 @@ Interações de componentes:
 
 ## Infraestrutura
 
-![Diagrama de infraestrutura](./docs/infra.svg)
+
 O sistema usa Docker para implantação de componentes COBOL:
 
 ### Recursos Docker
@@ -197,6 +197,9 @@ mvn test
 cd frontend
 ng test
 ```
+[Planejamento de Testes](backend\src\test\documentation\Planejamento_de_Testes.md)
+
+[Relatorios de Testes](backend\src\test\documentation\Relatorios.md)
 
 Os testes incluem:
 - Testes unitários para serviços e controladores
