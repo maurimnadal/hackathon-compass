@@ -19,8 +19,13 @@ export class AccountService {
   }
 
   //adicionar uma Account
-  postAccount(account: Account): Observable<Account> {
-    return this.http.post<Account>(`${this.apiUrl}accounts`, account);
+  postAccount(customerId: number, account: Omit<Account, "id" | "balance">): Observable<Omit<Account, "id" | "balance">> {
+    // Enviando customerId no corpo da requisição junto com a conta
+    const requestBody = {
+      customerId: customerId,
+      accountType: account.accountType
+    };
+    return this.http.post<Omit<Account, "id" | "balance">>(`${this.apiUrl}accounts`, requestBody);
   }
 
   //faz um depósito em uma Account
