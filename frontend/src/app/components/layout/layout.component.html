@@ -1,0 +1,42 @@
+<mat-toolbar color="primary">
+    <span>Banco Compass.UOL</span>
+    <span class="spacer"></span>
+    <div class="nav-links">
+        <!-- Home -->
+        <a mat-button routerLink="/">
+            <mat-icon>home</mat-icon>
+            Home
+        </a>
+
+        <!-- Cliente -->
+        <button mat-button [matMenuTriggerFor]="clienteMenu">
+            Clientes
+            <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #clienteMenu="matMenu">
+            <a mat-menu-item routerLink="/registrar-cliente">Registrar Cliente</a>
+            <a mat-menu-item routerLink="/editar-cliente">Editar Cliente</a>
+            <a mat-menu-item routerLink="/listar-cliente">Informações do Cliente</a>
+        </mat-menu>
+
+        <!-- Conta -->
+        <a mat-button routerLink="/criar-conta">Criar Conta</a>
+
+        <!-- Operações -->
+        <button mat-button [matMenuTriggerFor]="operacoesMenu">
+            Operações
+            <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #operacoesMenu="matMenu">
+            <a mat-menu-item routerLink="/depositar">Depositar</a>
+            <a mat-menu-item routerLink="/sacar">Sacar</a>
+        </mat-menu>
+
+        <!-- Transações -->
+        <a mat-button routerLink="/listar-transacoes">Relatório de Transações</a>
+    </div>
+</mat-toolbar>
+
+<div class="content">
+    <router-outlet></router-outlet>
+</div>

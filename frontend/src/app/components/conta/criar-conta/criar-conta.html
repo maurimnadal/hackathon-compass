@@ -1,0 +1,46 @@
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Criar Conta</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form (ngSubmit)="onSubmit()" #formConta="ngForm" class="form-container">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>ID do Cliente</mat-label>
+          <input
+            matInput
+            type="number"
+            id="customer_id"
+            name="customer_id"
+            [(ngModel)]="customer_id"
+            required
+            min="1"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tipo de Conta</mat-label>
+          <mat-select
+            id="type"
+            name="type"
+            [(ngModel)]="type"
+            required
+          >
+            <mat-option value="" disabled>Selecione</mat-option>
+            <mat-option value="C">Checking</mat-option>
+            <mat-option value="S">Savings</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="button-container">
+          <button mat-raised-button color="primary" type="submit" [disabled]="formConta.invalid">Criar Conta</button>
+        </div>
+
+        <div *ngIf="mensagem" class="message" [class.success]="mensagem.includes('sucesso')">
+          {{ mensagem }}
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
