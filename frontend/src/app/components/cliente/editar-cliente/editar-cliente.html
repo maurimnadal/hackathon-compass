@@ -30,7 +30,7 @@
             <!-- Formulário para editar cliente após encontrado -->
             <form [formGroup]="editarForm" (ngSubmit)="onSubmit()" *ngIf="clienteEncontrado && !atualizacaoSucesso">
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Digite o novo Nome (atual: {{clienteAtual?.nome}})</mat-label>
+                    <mat-label>Digite o novo Nome (atual: {{clienteAtual?.name}})</mat-label>
                     <input matInput formControlName="nome" required>
                     <mat-error *ngIf="editarForm.get('nome')?.hasError('required')">
                         Nome é obrigatório
@@ -55,7 +55,7 @@
                 </mat-form-field>
                 
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Digite a nova Data de Nascimento (atual: {{clienteAtual?.data_nascimento}})</mat-label>
+                    <mat-label>Digite a nova Data de Nascimento (atual: {{clienteAtual?.birthday}})</mat-label>
                     <input matInput formControlName="data_nascimento" placeholder="AAAAMMDD" required>
                     <mat-hint>Formato: AAAAMMDD</mat-hint>
                     <mat-error *ngIf="editarForm.get('data_nascimento')?.hasError('required')">
