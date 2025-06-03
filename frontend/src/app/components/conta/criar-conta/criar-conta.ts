@@ -55,8 +55,8 @@ export class CriarContaComponent {
 
     // Adicionando customerId como parâmetro separado ou no corpo da requisição
     this.contaService.postAccount(this.customer_id, account).subscribe({
-      next: (response) => {
-        this.mensagem = `Conta criada com sucesso para cliente ID ${this.customer_id} do tipo ${this.type}!`;
+      next: (response: any) => {
+        this.mensagem = `A conta ${response.id} do tipo ${this.type} foi criada com sucesso para o cliente ${this.customer_id}!`;
         this.isSuccess = true;
         this.isError = false;
         this.customer_id = null;
