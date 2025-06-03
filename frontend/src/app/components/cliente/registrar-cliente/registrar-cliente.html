@@ -49,6 +49,10 @@
                 <div class="button-row">
                     <button mat-raised-button color="primary" type="submit">Registrar</button>
                 </div>
+                <div *ngIf="errorMessage" class="error-message">
+                    <mat-icon color="warn">error</mat-icon>
+                    <span>{{ errorMessage }}</span>
+                </div>
             </form>
 
             <div *ngIf="registroSucesso" class="success-container">

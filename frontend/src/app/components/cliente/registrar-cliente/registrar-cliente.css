@@ -44,3 +44,17 @@
   font-weight: bold;
   font-size: 20px;
 }
+
+.error-message {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #ffebee;
+  border-radius: 4px;
+  color: #d32f2f;
+}
+
+.error-message mat-icon {
+  margin-right: 8px;
+}
