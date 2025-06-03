@@ -6,7 +6,9 @@ import com.example.dto.CustomerAccountsDTO;
 import com.example.dto.TransactionDTO;
 import com.example.dto.TransactionResponseDTO;
 import com.example.model.Account;
+import com.example.model.Customer;
 import com.example.model.Transaction;
+import com.example.repository.CustomerRepository;
 import com.example.service.AccountService;
 import com.example.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,11 +29,13 @@ public class AccountController {
 
     private final AccountService accountService;
     private final TransactionService transactionService;
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    public AccountController(AccountService accountService, TransactionService transactionService) {
+    public AccountController(AccountService accountService, TransactionService transactionService, CustomerRepository customerRepository) {
         this.accountService = accountService;
         this.transactionService = transactionService;
+        this.customerRepository = customerRepository;
     }
 
     // Endpoint HTTP POST para criar uma nova conta a partir dos dados enviados no corpo da requisição
@@ -50,16 +55,15 @@ public class AccountController {
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<?> getAccountsByCustomerId(@PathVariable Long customerId) {
         try {
+            // Validar se o cliente existe
+            Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+            
+            // Buscar as contas do cliente
             List<Account> accounts = accountService.getAccountsByCustomerId(customerId);
             
-            if (accounts.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            
-            // Obter informações do cliente da primeira conta (todas têm o mesmo cliente)
-            Account firstAccount = accounts.get(0);
-            
             // Converter contas para AccountResponseDTO (apenas id, tipo e saldo)
+            // Se não houver contas, a lista estará vazia, mas será retornada mesmo assim
             List<AccountResponseDTO> accountDTOs = accounts.stream()
                 .map(account -> new AccountResponseDTO(
                     account.getId(),
@@ -68,13 +72,13 @@ public class AccountController {
                 ))
                 .collect(Collectors.toList());
             
-            // Criar DTO com informações do cliente e lista de contas
+            // Criar DTO com informações do cliente e lista de contas (que pode estar vazia)
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             CustomerAccountsDTO response = new CustomerAccountsDTO(
-                firstAccount.getCustomer().getId(),
-                firstAccount.getCustomer().getName(),
-                firstAccount.getCustomer().getEmail(),
-                firstAccount.getCustomer().getBirthday().format(formatter),
+                customer.getId(),
+                customer.getName(),
+                customer.getEmail(),
+                customer.getBirthday().format(formatter),
                 accountDTOs
             );
             
