@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { Conta } from '../../models/conta/conta';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContaService {
   private apiUrl = 'http://localhost:8080/api/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   //listar as contas de um cliente
   getAccount(): Observable<Conta[]> {
@@ -23,18 +23,33 @@ export class ContaService {
 
   //faz um depósito em uma conta
   postDeposit(amount: number, account_id: number): Observable<Conta> {
-    const body = { "amount": amount };
-    return this.http.post<Conta>(`${this.apiUrl}accounts/${account_id}/deposit`, body);
+    const body = { amount: amount };
+    return this.http.post<Conta>(
+      `${this.apiUrl}accounts/${account_id}/deposit`,
+      body
+    );
   }
 
   //faz um saque em uma conta
   postWithdraw(amount: number, account_id: number): Observable<Conta> {
-    const body = { "amount": amount };
-    return this.http.post<Conta>(`${this.apiUrl}accounts/${account_id}/withdraw`, body);
+    const body = { amount: amount };
+    return this.http.post<Conta>(
+      `${this.apiUrl}accounts/${account_id}/withdraw`,
+      body
+    );
   }
 
   //retorna a lista de transações de uma conta
-  getTransactions(): Observable<Conta[]> {
-    return this.http.get<Conta[]>(`${this.apiUrl}accounts/reports/transactions`);
+  getTransactions(
+    userId: string,
+    dataInicio: string,
+    dataFim: string
+  ): Observable<Conta[]> {
+    return this.http.get<Conta[]>(
+      `${this.apiUrl}accounts/reports/transactions`,
+      {
+        params: { userId, dataInicio, dataFim },
+      }
+    );
   }
 }

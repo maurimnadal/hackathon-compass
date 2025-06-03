@@ -53,28 +53,23 @@ export class ListarTransacoes {
       dataFim: this.dataFim.toISOString(),
     };
 
-    /*this.http.post<any[]>('http://localhost:3000/transacoes', body).subscribe({
-      next: (res) => {
-        this.transacoes = res;
-        this.mensagem = res.length === 0 ? 'Nenhuma transação encontrada.' : '';
-      },
-      error: () => {
-        this.mensagem = 'Erro ao buscar transações.';
-        this.transacoes = [];
-      },
-    });*/
-
     /*service*/
-
-    this.contaService.getTransactions().subscribe({
-      next: (res) => {
-        this.transacoes = res;
-        this.mensagem = res.length === 0 ? 'Nenhuma transação encontrada.' : '';
-      },
-      error: () => {
-        this.mensagem = 'Erro ao buscar transações.';
-        this.transacoes = [];
-      },
-    });
+    this.contaService
+      .getTransactions(
+        this.numeroConta,
+        this.dataInicio!.toISOString(),
+        this.dataFim!.toISOString()
+      )
+      .subscribe({
+        next: (res) => {
+          this.transacoes = res;
+          this.mensagem =
+            res.length === 0 ? 'Nenhuma transação encontrada.' : '';
+        },
+        error: () => {
+          this.mensagem = 'Erro ao buscar transações.';
+          this.transacoes = [];
+        },
+      });
   }
 }
