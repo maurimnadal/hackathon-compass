@@ -7,7 +7,7 @@ import { Conta } from '../../models/conta/conta';
   providedIn: 'root'
 })
 export class ContaService {
-  private apiUrl = 'http://127.0.0.1:5000/';
+  private apiUrl = 'http://localhost:8080/api/';
 
   constructor(private http: HttpClient) { }
 

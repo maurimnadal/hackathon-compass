@@ -32,16 +32,16 @@
 
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Data de Nascimento (AAAAMMDD)</mat-label>
-                    <input matInput formControlName="dataNascimento" placeholder="AAAAMMDD" required>
-                    <mat-error *ngIf="clienteForm.get('dataNascimento')?.hasError('required')">
+                    <input matInput formControlName="data_nascimento" placeholder="AAAAMMDD" required>
+                    <mat-error *ngIf="clienteForm.get('data_nascimento')?.hasError('required')">
                         Data de nascimento é obrigatória
                     </mat-error>
                     <mat-error
-                        *ngIf="clienteForm.get('dataNascimento')?.hasError('onlyNumbers') && !clienteForm.get('dataNascimento')?.hasError('required')">
+                        *ngIf="clienteForm.get('data_nascimento')?.hasError('onlyNumbers') && !clienteForm.get('data_nascimento')?.hasError('required')">
                         Apenas números são permitidos
                     </mat-error>
                     <mat-error
-                        *ngIf="clienteForm.get('dataNascimento')?.hasError('pattern') && !clienteForm.get('dataNascimento')?.hasError('onlyNumbers') && !clienteForm.get('dataNascimento')?.hasError('required')">
+                        *ngIf="clienteForm.get('data_nascimento')?.hasError('pattern') && !clienteForm.get('data_nascimento')?.hasError('onlyNumbers') && !clienteForm.get('data_nascimento')?.hasError('required')">
                         A data deve ter exatamente 8 dígitos
                     </mat-error>
                 </mat-form-field>

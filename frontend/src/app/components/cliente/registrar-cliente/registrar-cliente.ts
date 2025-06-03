@@ -39,7 +39,7 @@ export class RegistrarCliente implements OnInit {
     this.clienteForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(1), this.noNumbersValidator()]],
       email: ['', [Validators.required, Validators.email]],
-      dataNascimento: ['', [
+      data_nascimento: ['', [
         Validators.required, 
         this.onlyNumbersValidator(),
         Validators.pattern(/^\d{8}$/)
@@ -54,7 +54,7 @@ export class RegistrarCliente implements OnInit {
         id_cliente: null,
         nome: this.clienteForm.value.nome,
         email: this.clienteForm.value.email,
-        data_nascimento: this.clienteForm.value.dataNascimento
+        data_nascimento: this.clienteForm.value.data_nascimento
       };
       
       this.clienteService.postClient(cliente).subscribe({
