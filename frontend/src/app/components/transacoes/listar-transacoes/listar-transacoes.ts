@@ -9,9 +9,10 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClient } from '@angular/common/http';
-import { ContaService } from '../../../services/conta/conta.service';
-import { Conta } from '../../../models/conta/conta';
 import { Observable } from 'rxjs';
+
+import { AccountService } from '../../../services/account/account.service';
+import { Account } from '../../../models/account/account';
 
 @Component({
   selector: 'app-listar-transacoes',
@@ -30,6 +31,7 @@ import { Observable } from 'rxjs';
   templateUrl: './listar-transacoes.html',
   styleUrls: ['./listar-transacoes.css'],
 })
+
 export class ListarTransacoes {
   private http = inject(HttpClient);
 
@@ -39,7 +41,7 @@ export class ListarTransacoes {
   transacoes: any[] = [];
   mensagem: string = '';
 
-  constructor(private contaService: ContaService) {}
+  constructor(private accountService: AccountService) {}
 
   listarTransacoes() {
     if (!this.numeroConta || !this.dataInicio || !this.dataFim) {
@@ -47,8 +49,9 @@ export class ListarTransacoes {
       return;
     }
 
+    //traduzir para inglês caso necessário
     const body = {
-      userId: this.numeroConta,
+      customerId: this.numeroConta,
       dataInicio: this.dataInicio.toISOString(),
       dataFim: this.dataFim.toISOString(),
     };
@@ -66,7 +69,7 @@ export class ListarTransacoes {
 
     /*service*/
 
-    this.contaService.getTransactions().subscribe({
+    this.accountService.getTransactions().subscribe({
       next: (res) => {
         this.transacoes = res;
         this.mensagem = res.length === 0 ? 'Nenhuma transação encontrada.' : '';

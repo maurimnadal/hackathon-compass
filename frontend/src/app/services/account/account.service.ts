@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Account } from '../../models/account/account';
+import { Customer } from '../../models/customer/customer';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +37,9 @@ export class AccountService {
   //retorna a lista de transações de uma Account
   getTransactions(): Observable<Account[]> {
     return this.http.get<Account[]>(`${this.apiUrl}accounts/reports/transactions`);
+  }
+
+  getCustomerAccounts(customerId: number): Observable<Customer> {
+    return this.http.get<Customer>(`${this.apiUrl}accounts/customer/${customerId}`);
   }
 }

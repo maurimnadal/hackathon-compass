@@ -1,45 +1,50 @@
 <main class="container-listar-cliente">
   <mat-form-field appearance="outline" class="form-field">
     <mat-label>Digite o ID do Cliente</mat-label>
-    <input matInput type="number" min="1" [(ngModel)]="clienteId" placeholder="ID do cliente" >
+    <input matInput type="number" min="1" [(ngModel)]="customerId" placeholder="ID do cliente" >
   </mat-form-field>
   <button
     mat-raised-button
     color="primary"
-    (click)="buscarCliente()"
+    (click)="buscarCustomer()"
     class="button-form">
     Buscar
   </button>
 
 
-  <ng-container *ngIf="clienteSelecionado">
+  <ng-container *ngIf="customerSelecionado">
     <mat-card class="client-card">
       <mat-card-header>
-        <mat-card-title>{{ clienteSelecionado.nome }}</mat-card-title>
-        <mat-card-subtitle>ID: {{ clienteSelecionado.id_cliente }}</mat-card-subtitle>
+        <mat-card-title>{{ customerSelecionado.name }}</mat-card-title>
+        <mat-card-subtitle>ID: {{ customerSelecionado.customerId }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <p><strong>Email:</strong> {{ clienteSelecionado.email }}</p>
-        <p><strong>Data de Nascimento:</strong> {{ clienteSelecionado.data_nascimento | date:'dd/MM/yyyy' }}</p>
+        <p><strong>Email:</strong> {{ customerSelecionado.email }}</p>
+        <p><strong>Data de Nascimento:</strong> {{ customerSelecionado.birthday | date:'dd/MM/yyyy' }}</p>
 
 
         <div class="account-container">
           <strong>Contas:</strong>
           <div class="accounts">
-            <mat-card *ngFor="let conta of clienteSelecionado.contas" class="account">
-              <mat-card-content>
-                <p><strong>ID:</strong> {{ conta.id_conta }}</p>
-                <p><strong>Tipo:</strong> {{ conta.tipo }}</p>
-                <p><strong>Saldo:</strong> {{ conta.saldo | currency:'BRL':'symbol':'1.2-2' }}</p>
-              </mat-card-content>
-            </mat-card>
+            <ng-container *ngIf="customerSelecionado.accounts && customerSelecionado.accounts.length > 0; else semConta">
+              <mat-card *ngFor="let account of customerSelecionado.accounts" class="account">
+                <mat-card-content>
+                  <p><strong>ID:</strong> {{ account.id }}</p>
+                  <p><strong>Tipo:</strong> {{ account.accountType }}</p>
+                  <p><strong>Saldo:</strong> {{ account.balance | currency:'BRL':'symbol':'1.2-2' }}</p>
+                </mat-card-content>
+              </mat-card>
+            </ng-container>
+            <ng-template #semConta>
+              <p>O usuário não possui contas cadastradas.</p>
+            </ng-template>
           </div>
         </div>
       </mat-card-content>
     </mat-card>
   </ng-container>
 
-  <div *ngIf="buscou && !clienteSelecionado" class="message">
+  <div *ngIf="buscou && !customerSelecionado" class="message">
     {{ mensagem }}
   </div>
 </main>

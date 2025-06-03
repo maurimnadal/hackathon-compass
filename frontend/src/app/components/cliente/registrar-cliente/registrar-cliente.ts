@@ -6,8 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ClienteService } from '../../../services/cliente/cliente.service';
-import { Cliente } from '../../../models/cliente/cliente';
+
+import { Customer } from '../../../models/customer/customer';
+import { CustomerService } from '../../../services/customer/customer.service';	
 
 @Component({
   selector: 'app-registrar-cliente',
@@ -32,7 +33,7 @@ export class RegistrarCliente implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private clienteService: ClienteService
+    private clienteService: CustomerService
   ) {}
 
   ngOnInit() {
@@ -50,16 +51,16 @@ export class RegistrarCliente implements OnInit {
   onSubmit() {
     if (this.clienteForm.valid) {
 
-      const cliente: Omit<Cliente, "contas"> = {
-        id_cliente: null,
-        nome: this.clienteForm.value.nome,
+      const cliente: Omit<Customer, "accounts"> = {
+        customerId: null,
+        name: this.clienteForm.value.nome,
         email: this.clienteForm.value.email,
-        data_nascimento: this.clienteForm.value.data_nascimento
+        birthday: this.clienteForm.value.data_nascimento
       };
       
       this.clienteService.postClient(cliente).subscribe({
         next: (response) => {
-          this.clienteId = response.id_cliente?.toString() || '';
+          this.clienteId = response.customerId?.toString() || '';
           this.registroSucesso = true;
         },
         error: (err) => {

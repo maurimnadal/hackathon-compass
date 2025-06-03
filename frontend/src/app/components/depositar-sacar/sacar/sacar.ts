@@ -5,8 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { ContaService } from '../../../services/conta/conta.service';
-
+import { AccountService } from '../../../services/account/account.service';
 
 @Component({
   selector: 'app-sacar',
@@ -21,25 +20,26 @@ import { ContaService } from '../../../services/conta/conta.service';
   templateUrl: './sacar.html',
   styleUrl: './sacar.css'
 })
+
 export class Sacar {
   numeroConta: number | null = null;
-  valor: number | null = null;
+  amount: number | null = null;
   mensagem: string = '';
 
-  constructor(private contaService: ContaService) { }
+  constructor(private accountService: AccountService) { }
 
 
   sacar() {
-    if (!this.valor || this.valor <= 0 || this.numeroConta == null) {
-      this.mensagem = 'Valor de saque ou número da conta inválidos.';
+    if (!this.amount || this.amount <= 0 || this.numeroConta == null) {
+      this.mensagem = 'amount de saque ou número da conta inválidos.';
       this.limparMensagem();
       return;
     }
 
-    this.contaService.postWithdraw(this.valor, this.numeroConta).subscribe({
+    this.accountService.postWithdraw(this.amount, this.numeroConta).subscribe({
       next: (res) => {
-        this.mensagem = `Saque de R$ ${this.valor} na conta ${this.numeroConta} realizado com sucesso!`;
-        this.valor = null;
+        this.mensagem = `Saque de R$ ${this.amount} na conta ${this.numeroConta} realizado com sucesso!`;
+        this.amount = null;
         this.numeroConta = null;
         this.limparMensagem();
       },

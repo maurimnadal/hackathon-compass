@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { ContaService } from '../../../services/conta/conta.service';
+import { AccountService } from '../../../services/account/account.service';
 
 @Component({
   selector: 'app-depositar',
@@ -21,28 +21,29 @@ import { ContaService } from '../../../services/conta/conta.service';
   templateUrl: './depositar.html',
   styleUrl: './depositar.css'
 })
+
 export class Depositar {
   numeroConta: number | null = null;
-  valor: number | null = null;
+  amount: number | null = null;
   mensagem: string = '';
 
 
-  constructor(private contaService: ContaService) { }
+  constructor(private accountService: AccountService) { }
 
   depositar() {
-    // Validação do valor e número da conta
-    if (!this.valor || this.valor <= 0 || this.numeroConta == null) {
-      this.mensagem = 'Valor de depósito ou número da conta inválidos.';
+    // Validação do amount e número da conta
+    if (!this.amount || this.amount <= 0 || this.numeroConta == null) {
+      this.mensagem = 'amount de depósito ou número da conta inválidos.';
       this.limparMensagem();
       return;
     }
 
     // Chamada ao serviço
-    this.contaService.postDeposit(this.valor, this.numeroConta).subscribe({
+    this.accountService.postDeposit(this.amount, this.numeroConta).subscribe({
       next: (res) => {
-        this.mensagem = `Depósito de R$ ${this.valor} na conta ${this.numeroConta} realizado com sucesso!`;
+        this.mensagem = `Depósito de R$ ${this.amount} na conta ${this.numeroConta} realizado com sucesso!`;
         this.limparMensagem();
-        this.valor = null;
+        this.amount = null;
         this.numeroConta = null;
       },
 

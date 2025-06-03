@@ -6,8 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ClienteService } from '../../../services/cliente/cliente.service';
-import { Cliente } from '../../../models/cliente/cliente';
+import { Customer } from '../../../models/customer/customer';
+import { CustomerService } from '../../../services/customer/customer.service';
 
 @Component({
   selector: 'app-editar-cliente',
@@ -28,7 +28,7 @@ export class EditarCliente implements OnInit {
   buscaForm!: FormGroup;
   editarForm!: FormGroup;
   
-  clienteAtual: Cliente | null = null;
+  clienteAtual: Customer | null = null;
   
   clienteEncontrado = false;
   atualizacaoSucesso = false;
@@ -38,7 +38,7 @@ export class EditarCliente implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private clienteService: ClienteService
+    private clienteService: CustomerService
   ) {}
 
   ngOnInit() {
@@ -73,9 +73,9 @@ export class EditarCliente implements OnInit {
         
         // Preenchendo o formulário de edição com os valores atuais
         this.editarForm.patchValue({
-          nome: cliente.nome,
+          nome: cliente.name,
           email: cliente.email,
-          data_nascimento: cliente.data_nascimento
+          data_nascimento: cliente.birthday
         });
         
         this.clienteEncontrado = true;
@@ -111,11 +111,11 @@ export class EditarCliente implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
     
-    const clienteAtualizado: Omit<Cliente, "contas" > = {
-      id_cliente: id,
-      nome: this.editarForm.value.nome,
+    const clienteAtualizado: Omit<Customer, "accounts" > = {
+      customerId: id,
+      name: this.editarForm.value.nome,
       email: this.editarForm.value.email,
-      data_nascimento: this.editarForm.value.data_nascimento
+      birthday: this.editarForm.value.data_nascimento
     };
     
     this.clienteService.putClient(clienteAtualizado).subscribe({

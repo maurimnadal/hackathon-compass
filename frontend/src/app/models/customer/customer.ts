@@ -5,5 +5,5 @@ export interface Customer {
   name: string;
   email: string;
   birthday: Date;
-  accounts: Account[];
+  accounts: Account[] | null;
 }

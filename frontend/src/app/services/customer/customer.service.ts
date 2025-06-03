@@ -23,8 +23,8 @@ export class CustomerService {
   }
 
   //atualizar um Customer
-  putClient(customer: Omit<Customer, "accounts"> & { id_customer: number }): Observable<Omit<Customer, "accounts">> {
-    return this.http.put<Omit<Customer, "accounts">>(`${this.apiUrl}customers/${customer.id_customer}`, customer);
+  putClient(customer: Omit<Customer, "accounts">): Observable<Omit<Customer, "accounts">> {
+    return this.http.put<Omit<Customer, "accounts">>(`${this.apiUrl}customers/${customer.customerId}`, customer);
   }
 
   
