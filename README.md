@@ -83,30 +83,25 @@ ng serve
 
 3. Acesse a aplicação em `http://localhost:4200`
 
-### Exemplos Mais Detalhados
+### API e Documentação
 
-#### Criando um Novo Cliente
-```http
-POST /api/customers
-Content-Type: application/json
+A API do backend pode ser acessada e testada através do Swagger UI disponível em:
 
-{
-  "name": "João Silva",
-  "email": "joao.silva@exemplo.com",
-  "birthday": "1990-01-01"
-}
+```
+http://localhost:8080/swagger
 ```
 
-#### Criando uma Nova Conta
-```http
-POST /api/accounts
-Content-Type: application/json
+O Swagger UI fornece documentação interativa completa de todas as rotas da API, incluindo:
+- Endpoints disponíveis
+- Parâmetros necessários
+- Formatos de resposta
+- Funcionalidade de teste integrada
 
-{
-  "customerId": 1,
-  "accountType": "S"
-}
-```
+Para testar a API de relatório de transações:
+1. Acesse o Swagger UI no navegador
+2. Localize o endpoint `/api/transactions/report/{customerId}`
+3. Forneça o ID do cliente e o intervalo de datas
+4. Execute a requisição para visualizar os IDs de cliente e transação nos resultados
 
 ### Solução de Problemas
 
