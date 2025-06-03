@@ -59,8 +59,8 @@ export class RegistrarCliente implements OnInit {
       };
       
       this.clienteService.postClient(cliente).subscribe({
-        next: (response) => {
-          this.clienteId = response.customerId?.toString() || '';
+        next: (response: any) => { 
+          this.clienteId = response.id?.toString() || response.customerId?.toString() || '';
           this.registroSucesso = true;
         },
         error: (err) => {
