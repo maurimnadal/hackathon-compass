@@ -8,7 +8,7 @@ import java.time.format.DateTimeParseException;
 public class DateValidator {
     public static void validateDate(String dateStr) {
         if (dateStr == null || dateStr.length() != 8) {
-            throw new IllegalArgumentException("Birthday must be 8 digits in YYYYMMDD format");
+            throw new IllegalArgumentException("Date must be 8 digits in YYYYMMDD format");
         }
 
         try {
@@ -18,7 +18,7 @@ public class DateValidator {
 
             // Validate month
             if (month < 1 || month > 12) {
-                throw new IllegalArgumentException("Birthday month must be between 1 and 12");
+                throw new IllegalArgumentException("Date month must be between 1 and 12");
             }
 
             // Validate day using YearMonth
@@ -38,7 +38,7 @@ public class DateValidator {
             LocalDate now = LocalDate.now();
 
             if (birthday.isAfter(now)) {
-                throw new IllegalArgumentException("Birthday cannot be in the future");
+                throw new IllegalArgumentException("Date cannot be in the future");
             }
 
             if (birthday.getYear() < 1900 || birthday.getYear() > now.getYear()) {
@@ -46,21 +46,21 @@ public class DateValidator {
             }
 
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid birthday format. Must be YYYYMMDD");
+            throw new IllegalArgumentException("Invalid Date format. Must be YYYYMMDD");
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid birthday format. Must be YYYYMMDD with a valid date");
+            throw new IllegalArgumentException("Invalid Date format. Must be YYYYMMDD with a valid date");
         }
     }
 
     public static LocalDate parseDate(String birthdayStr) {
         if (birthdayStr == null || birthdayStr.length() != 8) {
-            throw new IllegalArgumentException("Birthday must be 8 digits in YYYYMMDD format");
+            throw new IllegalArgumentException("Date must be 8 digits in YYYYMMDD format");
         }
 
         try {
             return LocalDate.parse(birthdayStr, DateTimeFormatter.ofPattern("yyyyMMdd"));
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid birthday format. Must be YYYYMMDD with a valid date");
+            throw new IllegalArgumentException("Invalid Date format. Must be YYYYMMDD with a valid date");
         }
     }
 }
