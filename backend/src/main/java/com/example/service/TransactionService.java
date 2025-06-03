@@ -76,6 +76,7 @@ public class TransactionService {
     private TransactionReportItemDTO mapToTransactionDetail(Transaction transaction) {
         TransactionReportItemDTO detail = new TransactionReportItemDTO();
         detail.setTransactionId(transaction.getId());
+        detail.setAccountId(transaction.getAccount().getId());
         detail.setType(transaction.getType().name());
         detail.setAmount(transaction.getAmount());
         detail.setDate(transaction.getTimestamp());
