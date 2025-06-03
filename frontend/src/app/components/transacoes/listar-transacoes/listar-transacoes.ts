@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 
 import { AccountService } from '../../../services/account/account.service';
 import { Account } from '../../../models/account/account';
+import { Transaction } from '../../../models/transaction/transaction';
 
 @Component({
   selector: 'app-listar-transacoes',
@@ -38,45 +39,51 @@ export class ListarTransacoes {
   numeroConta: string = '';
   dataInicio: Date | null = null;
   dataFim: Date | null = null;
-  transacoes: any[] = [];
+  transacoes: Transaction | null = null;
   mensagem: string = '';
 
   constructor(private accountService: AccountService) {}
 
   listarTransacoes() {
+    console.log('Campos:', this.numeroConta, this.dataInicio, this.dataFim);
+
     if (!this.numeroConta || !this.dataInicio || !this.dataFim) {
       this.mensagem = 'Preencha todos os campos.';
+      console.log('Mensagem:', this.mensagem);
       return;
     }
+    
 
-    //traduzir para inglês caso necessário
+    // Função para formatar a data para YYYYMMDD
+    const formatDate = (date: Date) =>
+      `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
+
     const body = {
-      customerId: this.numeroConta,
-      dataInicio: this.dataInicio.toISOString(),
-      dataFim: this.dataFim.toISOString(),
+      customerId: Number(this.numeroConta),
+      startDate: formatDate(this.dataInicio),
+      endDate: formatDate(this.dataFim),
     };
 
-    /*this.http.post<any[]>('http://localhost:3000/transacoes', body).subscribe({
-      next: (res) => {
-        this.transacoes = res;
-        this.mensagem = res.length === 0 ? 'Nenhuma transação encontrada.' : '';
-      },
-      error: () => {
-        this.mensagem = 'Erro ao buscar transações.';
-        this.transacoes = [];
-      },
-    });*/
+    console.log('Enviando para API:', body);
 
-    /*service*/
-
-    this.accountService.getTransactions().subscribe({
+    this.accountService.getTransactions({
+      customerId: body.customerId,
+      startDate: this.dataInicio,
+      endDate: this.dataFim
+    }).subscribe({
       next: (res) => {
+        console.log('Resposta da API:', res);
         this.transacoes = res;
-        this.mensagem = res.length === 0 ? 'Nenhuma transação encontrada.' : '';
+        if (!this.transacoes.transactions || this.transacoes.transactions.length === 0) {
+          this.mensagem = 'Nenhuma transação encontrada.';
+        } else {
+          this.mensagem = '';
+        }
       },
-      error: () => {
+      error: (err) => {
+        console.error('Erro ao buscar transações:', err);
         this.mensagem = 'Erro ao buscar transações.';
-        this.transacoes = [];
+        this.transacoes = null;
       },
     });
   }

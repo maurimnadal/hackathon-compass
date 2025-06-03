@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Account } from '../../models/account/account';
 import { Customer } from '../../models/customer/customer';
+import { Transaction } from '../../models/transaction/transaction';
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +36,20 @@ export class AccountService {
   }
 
   //retorna a lista de transações de uma Account
-  getTransactions(): Observable<Account[]> {
-    return this.http.get<Account[]>(`${this.apiUrl}accounts/reports/transactions`);
+  getTransactions(params: { customerId: number, startDate: Date, endDate: Date }): Observable<Transaction> {
+    const formatDate = (date: Date) =>
+      `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
+
+    const httpParams = {
+      customerId: params.customerId.toString(),
+      startDate: formatDate(params.startDate),
+      endDate: formatDate(params.endDate)
+    };
+
+    return this.http.get<Transaction>(
+      `${this.apiUrl}transactions/report/${params.customerId}`,
+      { params: httpParams }
+    );
   }
 
   getCustomerAccounts(customerId: number): Observable<Customer> {

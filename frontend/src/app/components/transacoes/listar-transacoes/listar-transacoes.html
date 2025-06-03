@@ -49,15 +49,14 @@
     Listar
   </button>
 
-  <div *ngIf="transacoes.length > 0" style="margin-top: 24px; width: 100%">
-    <h3>Transações encontradas</h3>
+    <div *ngIf="transacoes && transacoes.transactions && transacoes.transactions.length > 0" style="margin-top: 24px; width: 100%">    <h3>Transações encontradas</h3>
 
-    <mat-card *ngFor="let t of transacoes" style="margin-bottom: 12px">
+    <mat-card *ngFor="let t of transacoes.transactions" style="margin-bottom: 12px">
       <mat-card-content>
-        <p><strong>Conta:</strong> {{ t.conta }}</p>
-        <p><strong>Tipe:</strong> {{ t.tipo }}</p>
-        <p><strong>Valor:</strong> {{ t.valor | currency }}</p>
-        <p><strong>Período:</strong> {{ t.data }}</p>
+        <p><strong>ID:</strong> {{ t.transactionId }}</p>
+        <p><strong>Tipo:</strong> {{ t.type }}</p>
+        <p><strong>Valor:</strong> {{ t.amount | currency }}</p>
+        <p><strong>Data:</strong> {{ t.date | date:'dd/MM/yyyy' }}</p>
       </mat-card-content>
     </mat-card>
   </div>
