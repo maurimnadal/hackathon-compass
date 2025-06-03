@@ -31,7 +31,7 @@ export class Sacar {
 
   sacar() {
     if (!this.amount || this.amount <= 0 || this.numeroConta == null) {
-      this.mensagem = 'amount de saque ou número da conta inválidos.';
+      this.mensagem = 'Valor de saque ou número da conta inválidos.';
       this.limparMensagem();
       return;
     }
