@@ -33,7 +33,7 @@ export class Depositar {
   depositar() {
     // Validação do amount e número da conta
     if (!this.amount || this.amount <= 0 || this.numeroConta == null) {
-      this.mensagem = 'amount de depósito ou número da conta inválidos.';
+      this.mensagem = 'Valor de depósito ou número da conta inválidos.';
       this.limparMensagem();
       return;
     }
