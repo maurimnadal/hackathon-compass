@@ -1,5 +1,6 @@
 export interface TransactionDetail {
     transactionId: number; 
+    accountId: number;
     type: 'DEPOSIT' | 'WITHDRAWAL';
     amount: number;
     date: Date;
